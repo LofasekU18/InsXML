@@ -1,0 +1,15 @@
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\bin\Debug\net8.0\DataBuilderToINS.exe
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\bin\Debug\net8.0\DataBuilderToINS.deps.json
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\bin\Debug\net8.0\DataBuilderToINS.runtimeconfig.json
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\bin\Debug\net8.0\DataBuilderToINS.dll
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\bin\Debug\net8.0\DataBuilderToINS.pdb
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\obj\Debug\net8.0\DataBuilderToINS.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\obj\Debug\net8.0\DataBuilderToINS.AssemblyInfoInputs.cache
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\obj\Debug\net8.0\DataBuilderToINS.AssemblyInfo.cs
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\obj\Debug\net8.0\DataBuilderToINS.csproj.CoreCompileInputs.cache
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\obj\Debug\net8.0\DataBuilderToINS.sourcelink.json
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\obj\Debug\net8.0\DataBuilderToINS.dll
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\obj\Debug\net8.0\refint\DataBuilderToINS.dll
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\obj\Debug\net8.0\DataBuilderToINS.pdb
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\obj\Debug\net8.0\DataBuilderToINS.genruntimeconfig.cache
+c:\Users\Lukáš\projects\InsXML\DataBuilderToINS\obj\Debug\net8.0\ref\DataBuilderToINS.dll

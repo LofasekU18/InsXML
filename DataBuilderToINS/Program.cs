@@ -1,4 +1,5 @@
-﻿/*TODO:
+﻿using InsXml;
+/*TODO:
 1. SOAP request to isir
 2. Parse answer from XML to object - dluznik
 3. Connect to db via EF
@@ -7,3 +8,6 @@
 
 */
 Console.WriteLine("Hello, World!");
+
+Console.WriteLine(SearchSoap.SoapSearching("01881485").Result);
+
