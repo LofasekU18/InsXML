@@ -9,77 +9,70 @@ using System.Xml.Linq;
 
 
 */
-string xml = @"<Person>
-                           <Name>John Doe</Name>
-                           <Age>30</Age>
-                           <Gender>Male</Gender>
-                       </Person>";
 
-XElement personElement = XElement.Parse(xml);
-Person person = new Person
-{
-    Name = (string)personElement.Element("Name"),
-    Age = (int)personElement.Element("Age"),
-    Gender = (string)personElement.Element("Gender")
-};
-
-Console.WriteLine($"Name: {person.Name}");
-Console.WriteLine($"Age: {person.Age}");
-Console.WriteLine($"Gender: {person.Gender}");
 
 string result = await SearchSoap.SoapSearchingIC("01881485");
 string result2 = await SearchSoap.SoapSearchingRC("750720/0316");
 
-
-
-XElement elements = XElement.Parse(result);
-DataIsirIC dataIsirIC = new DataIsirIC
+static XElement ResponseParse(string response)
 {
-    // Ic = personElement.Element(XName ic),
+    XElement elements = XElement.Parse(response);
+    XNamespace soap = "http://schemas.xmlsoap.org/soap/envelope/";
+    XNamespace ns2 = "http://isirws.cca.cz/types/";
+
+    XElement responseElement = elements.Element(soap + "Body")?.Element(ns2 + "getIsirWsCuzkDataResponse");
+    XElement dataElement = responseElement?.Element("data");
+    return dataElement;
+    // XElement stavElement = responseElement?.Element("stav");
+}
+
+string date = "1975-07-20Z";
+
+
+DataIsirIC test = CreateDataIC(result);
+DataIsirRC test2 = CreateDataRC(result2);
+
+System.Console.WriteLine(test.Ic + ", " + test.Mesto);
+System.Console.WriteLine(test2.Rc + ", " + test2.Mesto + " " + test2.DatumNarozeni);
+
+
+
+
+static DataIsirIC CreateDataIC(string response)
+{
+    XElement dataElement = ResponseParse(response);
+    return new DataIsirIC
+    {
+        Ic = (string)dataElement?.Element("ic"),
+        CisloSenatu = (int)dataElement?.Element("cisloSenatu"),
+        BcVec = (int)dataElement?.Element("bcVec"),
+        Rocnik = (int)dataElement?.Element("rocnik"),
+        NazevOrganizace = (string)dataElement?.Element("nazevOrganizace"),
+        NazevOsoby = (string)dataElement?.Element("nazevOsoby"),
+        Mesto = (string)dataElement?.Element("mesto"),
+        Ulice = (string)dataElement?.Element("ulice"),
+        CisloPopisne = (string)dataElement?.Element("cisloPopisne"),
+        Okres = (string)dataElement?.Element("okres"),
+        Psc = (string)dataElement?.Element("psc"),
+    };
 };
-System.Console.WriteLine(dataIsirIC.Ic);
-Console.WriteLine("Hotovo");
-
-// XElement elements2 = XElement.Parse(result2);
-// var listOfEllements2 = elements2.Elements().ToList();
-// foreach (var item in listOfEllements2)
-// {
-//     System.Console.WriteLine(item);
-// }
-// Console.WriteLine("Hotovo");
-
-
-public class Person
+static DataIsirRC CreateDataRC(string response)
 {
-    public string Name { get; set; }
-    public int Age { get; set; }
-    public string Gender { get; set; }
-}
-class DataIsir
-{
-    public int CisloSenatu { get; set; }
-    public int DruhVec { get; set; }
-    public int BcVec { get; set; }
-    public int Rocnik { get; set; }
-    public string NazevOrganizace { get; set; }
-    public string NazevOsoby { get; set; }
-    public string Mesto { get; set; }
-    public string Ulice { get; set; }
-    public string CisloPopisne { get; set; }
-    public string Okres { get; set; }
-    public string Psc { get; set; }
-}
-
-class DataIsirIC : DataIsir
-{
-    public string Ic { get; set; }
-}
-class DataIsirRC : DataIsir
-{
-    public string Rc { get; set; }
-    public string Jmeno { get; set; }
-}
-
-
-
-
+    XElement dataElement = ResponseParse(response);
+    return new DataIsirRC
+    {
+        Rc = (string)dataElement?.Element("rc"),
+        CisloSenatu = (int)dataElement?.Element("cisloSenatu"),
+        BcVec = (int)dataElement?.Element("bcVec"),
+        Rocnik = (int)dataElement?.Element("rocnik"),
+        NazevOrganizace = (string)dataElement?.Element("nazevOrganizace"),
+        DatumNarozeni = DateOnly.Parse(((string)dataElement?.Element("datumNarozeni"))?.Substring(0, ((string)dataElement?.Element("datumNarozeni")).Length - 1)),
+        Jmeno = (string)dataElement?.Element("jmeno"),
+        NazevOsoby = (string)dataElement?.Element("nazevOsoby"),
+        Mesto = (string)dataElement?.Element("mesto"),
+        Ulice = (string)dataElement?.Element("ulice"),
+        CisloPopisne = (string)dataElement?.Element("cisloPopisne"),
+        Okres = (string)dataElement?.Element("okres"),
+        Psc = (string)dataElement?.Element("psc"),
+    };
+};

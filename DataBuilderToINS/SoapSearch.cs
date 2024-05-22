@@ -1,7 +1,7 @@
 using System.Text;
 
 namespace InsXml;
-class SearchSoap
+static class SearchSoap
 {
     private static readonly HttpClient httpClient = new HttpClient();
 
