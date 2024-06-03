@@ -1,5 +1,6 @@
 ﻿using InsXml;
-using System.Net.NetworkInformation;
+
+
 
 /*TODO:
 1. SOAP request to isir
@@ -9,14 +10,32 @@ using System.Net.NetworkInformation;
 
 
 */
+//"01881485"
+// "750720/0316"
+string a = "750720/0316";
+
+switch (IntendedID.Intended(a))
+{
+    case 1:
+        DataIsirRC test2 = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC(a));
+        if (test2 != null)
+        System.Console.WriteLine(test2.Rc + ", " + test2.Mesto + " " + test2.DatumNarozeni);
+        break;
+
+    case 2:
+        DataIsirIC test = ParseXmlToData.CreateDataIC(await SearchSoap.SoapSearchingIC(a));
+        if (test != null)
+        System.Console.WriteLine(test.Ic + ", " + test.Mesto);
+        break;
+    case 0:
+        System.Console.WriteLine("Chyba");
+        break;
+
+}
 
 
 
-DataIsirIC test = ParseXmlToData.CreateDataIC(await SearchSoap.SoapSearchingIC("01881485"));
-DataIsirRC test2 = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC("750720/0316"));
 
-System.Console.WriteLine(test.Ic + ", " + test.Mesto);
-System.Console.WriteLine(test2.Rc + ", " + test2.Mesto + " " + test2.DatumNarozeni);
 
 
 

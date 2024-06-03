@@ -17,40 +17,57 @@ static class ParseXmlToData
     public static DataIsirIC CreateDataIC(string response)
     {
         XElement dataElement = ResponseParse(response);
-        return new DataIsirIC
+        try
         {
-            Ic = (string)dataElement?.Element("ic"),
-            CisloSenatu = (int)dataElement?.Element("cisloSenatu"),
-            BcVec = (int)dataElement?.Element("bcVec"),
-            Rocnik = (int)dataElement?.Element("rocnik"),
-            NazevOrganizace = (string)dataElement?.Element("nazevOrganizace"),
-            NazevOsoby = (string)dataElement?.Element("nazevOsoby"),
-            Mesto = (string)dataElement?.Element("mesto"),
-            Ulice = (string)dataElement?.Element("ulice"),
-            CisloPopisne = (string)dataElement?.Element("cisloPopisne"),
-            Okres = (string)dataElement?.Element("okres"),
-            Psc = (string)dataElement?.Element("psc"),
-        };
+            return new DataIsirIC
+            {
+                Ic = (string)dataElement?.Element("ic"),
+                CisloSenatu = (int)dataElement?.Element("cisloSenatu"),
+                BcVec = (int)dataElement?.Element("bcVec"),
+                Rocnik = (int)dataElement?.Element("rocnik"),
+                NazevOrganizace = (string)dataElement?.Element("nazevOrganizace"),
+                NazevOsoby = (string)dataElement?.Element("nazevOsoby"),
+                Mesto = (string)dataElement?.Element("mesto"),
+                Ulice = (string)dataElement?.Element("ulice"),
+                CisloPopisne = (string)dataElement?.Element("cisloPopisne"),
+                Okres = (string)dataElement?.Element("okres"),
+                Psc = (string)dataElement?.Element("psc"),
+            };
+        }
+        catch (Exception ex)
+        {
+
+            return null;
+        }
     }
 
     public static DataIsirRC CreateDataRC(string response)
     {
         XElement dataElement = ResponseParse(response);
-        return new DataIsirRC
+        try
         {
-            Rc = (string)dataElement?.Element("rc"),
-            CisloSenatu = (int)dataElement?.Element("cisloSenatu"),
-            BcVec = (int)dataElement?.Element("bcVec"),
-            Rocnik = (int)dataElement?.Element("rocnik"),
-            NazevOrganizace = (string)dataElement?.Element("nazevOrganizace"),
-            DatumNarozeni = DateOnly.Parse(((string)dataElement?.Element("datumNarozeni"))?.Substring(0, ((string)dataElement?.Element("datumNarozeni")).Length - 1)),
-            Jmeno = (string)dataElement?.Element("jmeno"),
-            NazevOsoby = (string)dataElement?.Element("nazevOsoby"),
-            Mesto = (string)dataElement?.Element("mesto"),
-            Ulice = (string)dataElement?.Element("ulice"),
-            CisloPopisne = (string)dataElement?.Element("cisloPopisne"),
-            Okres = (string)dataElement?.Element("okres"),
-            Psc = (string)dataElement?.Element("psc"),
-        };
+            return new DataIsirRC
+            {
+
+                Rc = (string)dataElement?.Element("rc"),
+                CisloSenatu = (int)dataElement?.Element("cisloSenatu"),
+                BcVec = (int)dataElement?.Element("bcVec"),
+                Rocnik = (int)dataElement?.Element("rocnik"),
+                NazevOrganizace = (string)dataElement?.Element("nazevOrganizace"),
+                DatumNarozeni = DateOnly.Parse(((string)dataElement?.Element("datumNarozeni"))?.Substring(0, ((string)dataElement?.Element("datumNarozeni")).Length - 1)),
+                Jmeno = (string)dataElement?.Element("jmeno"),
+                NazevOsoby = (string)dataElement?.Element("nazevOsoby"),
+                Mesto = (string)dataElement?.Element("mesto"),
+                Ulice = (string)dataElement?.Element("ulice"),
+                CisloPopisne = (string)dataElement?.Element("cisloPopisne"),
+                Okres = (string)dataElement?.Element("okres"),
+                Psc = (string)dataElement?.Element("psc"),
+            };
+        }
+        catch (Exception ex)
+        {
+
+            return null;
+        }
     }
 }

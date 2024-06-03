@@ -3,6 +3,9 @@ using System.Text;
 namespace InsXml;
 static class SearchSoap
 {
+
+// TODO: add check if respon is not valid/null and stop
+
     private static readonly HttpClient httpClient = new HttpClient();
 
     public static async Task<string> SoapSearchingIC(string ic)
