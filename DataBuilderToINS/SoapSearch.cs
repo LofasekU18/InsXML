@@ -4,7 +4,7 @@ namespace InsXml;
 static class SearchSoap
 {
 
-// TODO: add check if respon is not valid/null and stop
+    // TODO: add check if respon is not valid/null and stop
 
     private static readonly HttpClient httpClient = new HttpClient();
 
@@ -31,7 +31,8 @@ static class SearchSoap
         }
         catch (Exception ex)
         {
-            return ex.Message;
+            Console.WriteLine(ex.Message);
+            return null;
         }
     }
 
@@ -58,7 +59,8 @@ static class SearchSoap
         }
         catch (Exception ex)
         {
-            return ex.Message;
+            Console.WriteLine(ex.Message);
+            return null;
         }
     }
 

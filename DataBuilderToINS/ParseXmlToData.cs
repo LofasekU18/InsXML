@@ -4,20 +4,33 @@ static class ParseXmlToData
 {
     static XElement ResponseParse(string response)
     {
-        XElement elements = XElement.Parse(response);
-        XNamespace soap = "http://schemas.xmlsoap.org/soap/envelope/";
-        XNamespace ns2 = "http://isirws.cca.cz/types/";
+        if (response != null)
+        {
+            XElement elements = XElement.Parse(response);
+            XNamespace soap = "http://schemas.xmlsoap.org/soap/envelope/";
+            XNamespace ns2 = "http://isirws.cca.cz/types/";
 
-        XElement responseElement = elements.Element(soap + "Body")?.Element(ns2 + "getIsirWsCuzkDataResponse");
-        XElement dataElement = responseElement?.Element("data");
-        return dataElement;
+            XElement responseElement = elements.Element(soap + "Body")?.Element(ns2 + "getIsirWsCuzkDataResponse");
+            if (elements.ContainsTag("data"))
+            {
+                XElement dataElement = responseElement?.Element("data");
+                return dataElement;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+            System.Console.WriteLine("Nepovedlo se nacist data z ISIR");
+        return null;
         // XElement stavElement = responseElement?.Element("stav");
     }
 
     public static DataIsirIC CreateDataIC(string response)
     {
         XElement dataElement = ResponseParse(response);
-        try
+        if (dataElement != null)
         {
             return new DataIsirIC
             {
@@ -34,18 +47,18 @@ static class ParseXmlToData
                 Psc = (string)dataElement?.Element("psc"),
             };
         }
-        catch (Exception ex)
-        {
-
-            return null;
-        }
+        else
+            return new DataIsirIC();
     }
+
+
 
     public static DataIsirRC CreateDataRC(string response)
     {
         XElement dataElement = ResponseParse(response);
-        try
+        if (dataElement != null)
         {
+
             return new DataIsirRC
             {
 
@@ -64,10 +77,13 @@ static class ParseXmlToData
                 Psc = (string)dataElement?.Element("psc"),
             };
         }
-        catch (Exception ex)
-        {
+        else
+            return new DataIsirRC();
 
-            return null;
-        }
+
+    }
+    public static bool ContainsTag(this XElement element, string tagName)
+    {
+        return element.Descendants(tagName).Any();
     }
 }
