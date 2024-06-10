@@ -10,11 +10,24 @@ using InsXml;
 4. Parse data from db to xlement - celkova castka(7865/6655) - vymozna castka, usn/pov, and create xml
 
 
+Create class for IC/RC in first touch
+Create class for ExTitul(datum, ex titul cislo, vydal),Money(7865/6655, odecist),...
+Write SQL, store to app.config
+Class -> method to create xml
+Define Main to run all of this shit
+
+
+
 */
 //"01881485"
 // "750720/0316"
-var test3 = OleConnect.GetRowFromDatabase(ConfigurationManager.AppSettings["Query1"]);
-System.Console.WriteLine(test3);
+var test3 = OleConnect.GetRowFromDatabase<dluznikA>(ConfigurationManager.AppSettings["Query1"]);
+var test4 = OleConnect.GetRowFromDatabase<dluznikB>(ConfigurationManager.AppSettings["Query1"]);
+System.Console.WriteLine(test3.ToString());
+System.Console.WriteLine(test3.GetType());
+System.Console.WriteLine(test4.ToString());
+System.Console.WriteLine(test4.GetType());
+
 string a = "750720/031";
 
 switch (IntendedID.Intended(a))
