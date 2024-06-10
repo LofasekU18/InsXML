@@ -1,17 +1,20 @@
-﻿using InsXml;
+﻿using System.Configuration;
+using InsXml;
 
 
 
 /*TODO:
-1. SOAP request to isir
-2. Parse answer from XML to object - dluznik
-3. Connect to db via EF
-4. Parse data from db to object - celkova castka(7865/6655) - vymozna castka, usn/pov, 
+1. SOAP request to isir - 1
+2. Parse answer from XML to object - dluznik - 1
+3. Create method to connect in db and select via string sql, use for everthing from data
+4. Parse data from db to xlement - celkova castka(7865/6655) - vymozna castka, usn/pov, and create xml
 
 
 */
 //"01881485"
 // "750720/0316"
+var test3 = OleConnect.GetRowFromDatabase(ConfigurationManager.AppSettings["Query1"]);
+System.Console.WriteLine(test3);
 string a = "750720/031";
 
 switch (IntendedID.Intended(a))
