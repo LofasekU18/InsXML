@@ -23,10 +23,13 @@ Define Main to run all of this shit
 // "750720/0316"
 var test3 = OleConnect.GetRowFromDatabase<dluznikA>(ConfigurationManager.AppSettings["Query1"]);
 var test4 = OleConnect.GetRowFromDatabase<dluznikB>(ConfigurationManager.AppSettings["Query1"]);
+var test5 = OleConnect.GetRowFromDatabase<string>(ConfigurationManager.AppSettings["Query1"]);
 System.Console.WriteLine(test3.ToString());
 System.Console.WriteLine(test3.GetType());
 System.Console.WriteLine(test4.ToString());
 System.Console.WriteLine(test4.GetType());
+System.Console.WriteLine(test5.ToString());
+System.Console.WriteLine(test5.GetType());
 
 string a = "750720/031";
 

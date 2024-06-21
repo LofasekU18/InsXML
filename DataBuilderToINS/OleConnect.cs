@@ -40,7 +40,11 @@ class OleConnect
                                     MyProperty2 = reader.GetValue(1).ToString(),
                                 }, typeof(T));
                             }
-
+                            if (typeof(T) == typeof(string))
+                            {
+                                return (T)Convert.ChangeType(new string(reader.GetValue(0).ToString())
+                               , typeof(T));
+                            }
                         }
                     }
                 }
