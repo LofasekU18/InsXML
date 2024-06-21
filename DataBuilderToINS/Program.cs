@@ -21,7 +21,7 @@ Define Main to run all of this shit
 */
 //"01881485"
 // "750720/0316"
-var test3 = OleConnect.GetRowFromDatabase<dluznikA>(ConfigurationManager.AppSettings["Query1"]);
+var test3 = OleConnect.GetRowFromDatabase<dluznikA>("SELECT TOP 3 * FROM Entry;");
 var test4 = OleConnect.GetRowFromDatabase<dluznikB>(ConfigurationManager.AppSettings["Query1"]);
 var test5 = OleConnect.GetRowFromDatabase<string>(ConfigurationManager.AppSettings["Query1"]);
 System.Console.WriteLine(test3.ToString());

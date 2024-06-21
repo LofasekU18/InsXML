@@ -53,6 +53,7 @@ class OleConnect
         catch (Exception ex)
         {
             Console.WriteLine($"An error occurred: {ex.Message}");
+            Environment.Exit(0);
         }
 
         // Return null if no data found or an error occurred
