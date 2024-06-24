@@ -25,24 +25,16 @@ class OleConnect
                     {
                         if (reader.Read())
                         {
-                            if (typeof(T) == typeof(dluznikA))
+                            if (typeof(T) == typeof(DataMsAccess))
                             {
-                                return (T)Convert.ChangeType(new dluznikA
+                                return (T)Convert.ChangeType(new DataMsAccess
                                 {
                                     MyProperty = reader.GetValue(0).ToString(),
                                 }, typeof(T));
                             }
-                            if (typeof(T) == typeof(dluznikB))
+                            if (typeof(T) == typeof(List<string>)) // + SQL(Povinny + adresa - RC a IC) + If(RC == NULL) => IC a opacne
                             {
-                                return (T)Convert.ChangeType(new dluznikB
-                                {
-                                    MyProperty = reader.GetValue(0).ToString(),
-                                    MyProperty2 = reader.GetValue(1).ToString(),
-                                }, typeof(T));
-                            }
-                            if (typeof(T) == typeof(string))
-                            {
-                                return (T)Convert.ChangeType(new string(reader.GetValue(0).ToString())
+                                return (T)Convert.ChangeType(new List<string> { reader.GetValue(0).ToString(), reader.GetValue(1).ToString() }
                                , typeof(T));
                             }
                         }
@@ -61,27 +53,6 @@ class OleConnect
     }
 
 }
-class dluznikA
-{
-    public string MyProperty { get; set; }
-    public string MyProperty2 { get; set; }
-    public string MyProperty3 { get; set; }
 
-    public override string ToString()
-    {
-        return $"{MyProperty} {MyProperty2} {MyProperty3}";
-    }
-}
-class dluznikB
-{
-    public string MyProperty { get; set; }
-    public string MyProperty2 { get; set; }
-    public string MyProperty3 { get; set; }
-
-    public override string ToString()
-    {
-        return $"{MyProperty} {MyProperty2} {MyProperty3}";
-    }
-}
 
 

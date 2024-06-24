@@ -21,17 +21,20 @@ Define Main to run all of this shit
 */
 //"01881485"
 // "750720/0316"
-var test3 = OleConnect.GetRowFromDatabase<dluznikA>("SELECT TOP 3 * FROM Entry;");
-var test4 = OleConnect.GetRowFromDatabase<dluznikB>(ConfigurationManager.AppSettings["Query1"]);
+
+System.Console.WriteLine("Zadej exko");
+string a = Console.ReadLine();
+var test3 = OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 3 * FROM Entry;");
+// var test4 = OleConnect.GetRowFromDatabase<dluznikB>(ConfigurationManager.AppSettings["Query1"]);
 var test5 = OleConnect.GetRowFromDatabase<string>(ConfigurationManager.AppSettings["Query1"]);
 System.Console.WriteLine(test3.ToString());
 System.Console.WriteLine(test3.GetType());
-System.Console.WriteLine(test4.ToString());
-System.Console.WriteLine(test4.GetType());
+// System.Console.WriteLine(test4.ToString());
+// System.Console.WriteLine(test4.GetType());
 System.Console.WriteLine(test5.ToString());
 System.Console.WriteLine(test5.GetType());
 
-string a = "750720/031";
+string a = "750720/0316";
 
 switch (IntendedID.Intended(a))
 {
