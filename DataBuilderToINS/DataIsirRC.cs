@@ -1,4 +1,4 @@
-class DataIsirRC : DataIsir
+public class DataIsirRC : DataIsir
 {
     public string Rc { get; set; }
     public string Jmeno { get; set; }

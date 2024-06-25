@@ -1,4 +1,4 @@
-class DataIsir
+public class DataIsir
 {
     public int CisloSenatu { get; set; }
     public int BcVec { get; set; }

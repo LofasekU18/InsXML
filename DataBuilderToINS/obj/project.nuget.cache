@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "OGiDk7R+34JRnXT8eiPRnmfddqGnLZd5nXmlxMXv8hXgFZb5+xvjVdzVbAFauXVR6xVp3ujS7PayZd/17ps45g==",
+  "dgSpecHash": "QRxXuLuf/+PBUYdvXDEyeQNtRmY56ntQMY8Bi4j5k96ry/k8p3lm+W82ItwZG2MSSn34gJOz3ObI/pLqRF1hKA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lukáš\\projects\\InsXML\\DataBuilderToINS\\DataBuilderToINS.csproj",
+  "projectFilePath": "c:\\Users\\Lukáš\\projects\\InsXML\\DataBuilderToINS\\DataBuilderToINS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lukáš\\.nuget\\packages\\system.configuration.configurationmanager\\9.0.0-preview.4.24266.19\\system.configuration.configurationmanager.9.0.0-preview.4.24266.19.nupkg.sha512",
     "C:\\Users\\Lukáš\\.nuget\\packages\\system.data.oledb\\9.0.0-preview.4.24266.19\\system.data.oledb.9.0.0-preview.4.24266.19.nupkg.sha512",

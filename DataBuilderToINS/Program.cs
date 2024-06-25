@@ -32,7 +32,7 @@ DateOnly dateOnly = new DateOnly(1994, 8, 8);
 
 
 
-var test8 = test.CreateXElement("datum", dateOnly);
+var test8 = TestClass.CreateXElement("datum", dateOnly);
 System.Console.WriteLine(test8);
 
 
@@ -45,7 +45,7 @@ switch (IntendedID.Intended(a))
     case 1:
         DataIsirRC test2 = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC(a));
         if (test2 != null)
-            System.Console.WriteLine(test2.Rc + ", " + test2.Mesto + " " + test2.DatumNarozeni);
+            System.Console.WriteLine(TestClass.CreateXmlFo(test2));
         break;
 
     case 2:

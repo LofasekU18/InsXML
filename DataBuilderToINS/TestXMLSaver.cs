@@ -2,7 +2,7 @@ using System.Xml.Linq;
 namespace InsXml;
 
 //TODO : Figure out how to use delegates for Create method
-public class test
+public static class TestClass
 
 {
 	public static XElement CreateXElement<T>(string tagName, T data) // generic method to create XELEMENT, just first opinion, its too complicate to create such long xml
@@ -11,9 +11,9 @@ public class test
 		return new XElement(tagName, data);
 	}
 
-	public static string CreateXmlFo()
+	public static string CreateXmlFo(DataIsirRC dataIsirRC)
 	{
-		return new string("""
+		return new string($"""
 <?xml version="1.0" encoding="UTF-8"?>
 <ELPP verze="1.4.2">
 	<prilohy/>
@@ -21,10 +21,10 @@ public class test
 	<hlavicka>
 		<spisznacka>
 			<soud>KSPH</soud>
-			<senat>34</senat>
+			<senat>{dataIsirRC.CisloSenatu}</senat>
 			<rejstrik>INS</rejstrik>
-			<bc>3434</bc>
-			<rocnik>2024</rocnik>
+			<bc>{dataIsirRC.BcVec}</bc>
+			<rocnik>{dataIsirRC.Rocnik}</rocnik>
 		</spisznacka>
 	</hlavicka>
 	<dluznik fo_po_switch="1">
