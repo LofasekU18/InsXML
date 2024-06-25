@@ -1,4 +1,6 @@
 ﻿using System.Configuration;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml.Linq;
 using InsXml;
 
 
@@ -21,18 +23,26 @@ Define Main to run all of this shit
 */
 //"01881485"
 // "750720/0316"
-
 System.Console.WriteLine("Zadej exko");
-string a = Console.ReadLine();
+Console.ReadLine();
+var test5 = OleConnect.GetRowFromDatabase<List<string>>("SELECT TOP 3 * FROM Entry;"); // Find RC, IC in db, add as parm for func to choose pravnickou/fyzickou osobu
+
 var test3 = OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 3 * FROM Entry;");
 // var test4 = OleConnect.GetRowFromDatabase<dluznikB>(ConfigurationManager.AppSettings["Query1"]);
-var test5 = OleConnect.GetRowFromDatabase<string>(ConfigurationManager.AppSettings["Query1"]);
 System.Console.WriteLine(test3.ToString());
 System.Console.WriteLine(test3.GetType());
 // System.Console.WriteLine(test4.ToString());
 // System.Console.WriteLine(test4.GetType());
-System.Console.WriteLine(test5.ToString());
+System.Console.WriteLine(test5[0] + " zde " + test5[1]);
 System.Console.WriteLine(test5.GetType());
+
+DateOnly dateOnly = new DateOnly(1994,8,8);
+
+var test8 = CreateXElement("datum", dateOnly);
+System.Console.WriteLine(test8);
+
+
+
 
 string a = "750720/0316";
 
@@ -53,6 +63,13 @@ switch (IntendedID.Intended(a))
         System.Console.WriteLine("Chyba");
         break;
 
+
+
+}
+static XElement CreateXElement<T>(string tagName, T data)
+{
+    // Create and return the XElement with the specified tag name and data
+    return new XElement(tagName, data);
 }
 
 
