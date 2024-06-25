@@ -6,19 +6,10 @@ using InsXml;
 
 
 /*TODO:
-1. SOAP request to isir - 1
-2. Parse answer from XML to object - dluznik - 1
-3. Create method to connect in db and select via string sql, use for everthing from data
-4. Parse data from db to xlement - celkova castka(7865/6655) - vymozna castka, usn/pov, and create xml
-
-
-Create class for IC/RC in first touch
-Create class for ExTitul(datum, ex titul cislo, vydal),Money(7865/6655, odecist),...
-Write SQL, store to app.config
-Class -> method to create xml
-Define Main to run all of this shit
-
-
+Add logic to:
+1. choose if is subject FO or PO
+2. save to file
+3. figure out how to complete it to self, this is just garbage
 
 */
 //"01881485"
@@ -36,9 +27,12 @@ System.Console.WriteLine(test3.GetType());
 System.Console.WriteLine(test5[0] + " zde " + test5[1]);
 System.Console.WriteLine(test5.GetType());
 
-DateOnly dateOnly = new DateOnly(1994,8,8);
+DateOnly dateOnly = new DateOnly(1994, 8, 8);
 
-var test8 = CreateXElement("datum", dateOnly);
+
+
+
+var test8 = test.CreateXElement("datum", dateOnly);
 System.Console.WriteLine(test8);
 
 
@@ -65,11 +59,6 @@ switch (IntendedID.Intended(a))
 
 
 
-}
-static XElement CreateXElement<T>(string tagName, T data)
-{
-    // Create and return the XElement with the specified tag name and data
-    return new XElement(tagName, data);
 }
 
 
