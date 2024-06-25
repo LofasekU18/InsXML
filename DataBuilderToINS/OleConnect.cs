@@ -29,7 +29,7 @@ class OleConnect
                             {
                                 return (T)Convert.ChangeType(new DataMsAccess
                                 {
-                                    MyProperty = reader.GetValue(0).ToString(),
+                                    RozhodnutiVydal = reader?.GetValue(0).ToString(),
                                 }, typeof(T));
                             }
                             if (typeof(T) == typeof(List<string>)) // + SQL(Povinny + adresa - RC a IC) + If(RC == NULL) => IC a opacne

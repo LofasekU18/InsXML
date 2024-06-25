@@ -1,7 +1,7 @@
 
 using System.Text.RegularExpressions;
 
-public static class IntendedID
+static class IntendedID
 {
     public static int Intended(string input)
     {

@@ -2,15 +2,14 @@ namespace InsXml;
 
 class DataMsAccess
 {
-    public string MyProperty { get; set; }
-    public string MyProperty2 { get; set; }
-    public string MyProperty3 { get; set; }
-
-    public override string ToString()
-    {
-        return $"{MyProperty} {MyProperty2} {MyProperty3}";
-    }
+    public string RozhodnutiVydal { get; set; }
+    public string RozhodnutiTyp { get; set; }
+    public string RozhodnutiCislo { get; set; }
+    public DateTime RozhodnutiDatum { get; set; }
+    public int PenizeVymozeno { get; set; }
 }
+
+
 
 
 
