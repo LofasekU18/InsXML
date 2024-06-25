@@ -13,7 +13,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DataBuilderToINS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+60d03078fd1fd69ce88ef37c0f99b0c312ea5059")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a49a5bd3ca66ca084d86aa2a0ae7bef823136ff3")]
+>>>>>>> c558b867481721fdb7d83337a3c434341d3379af
 [assembly: System.Reflection.AssemblyProductAttribute("DataBuilderToINS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DataBuilderToINS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

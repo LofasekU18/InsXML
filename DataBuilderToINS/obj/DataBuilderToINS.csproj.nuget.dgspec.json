@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\Lukáš\\projects\\InsXML\\DataBuilderToINS\\DataBuilderToINS.csproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "C:\\Users\\Lukáš\\projects\\InsXML\\DataBuilderToINS\\DataBuilderToINS.csproj",
         "packagesPath": "C:\\Users\\Lukáš\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Lukáš\\projects\\InsXML\\DataBuilderToINS\\obj\\",
+=======
+    "c:\\Users\\Lukáš\\projects\\InsXML\\DataBuilderToINS\\DataBuilderToINS.csproj": {}
+  },
+  "projects": {
+    "c:\\Users\\Lukáš\\projects\\InsXML\\DataBuilderToINS\\DataBuilderToINS.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\Lukáš\\projects\\InsXML\\DataBuilderToINS\\DataBuilderToINS.csproj",
+        "projectName": "DataBuilderToINS",
+        "projectPath": "c:\\Users\\Lukáš\\projects\\InsXML\\DataBuilderToINS\\DataBuilderToINS.csproj",
+        "packagesPath": "C:\\Users\\Lukáš\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\Lukáš\\projects\\InsXML\\DataBuilderToINS\\obj\\",
+>>>>>>> c558b867481721fdb7d83337a3c434341d3379af
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

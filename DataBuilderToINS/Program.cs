@@ -51,7 +51,7 @@ switch (IntendedID.Intended(a))
     case 2:
         DataIsirIC test = ParseXmlToData.CreateDataIC(await SearchSoap.SoapSearchingIC(a));
         if (test != null)
-            System.Console.WriteLine(test.Ic + ", " + test.Mes`to);
+            System.Console.WriteLine(test.Ic + ", " + test.Mesto);
         break;
     case 0:
         System.Console.WriteLine("Chyba");
