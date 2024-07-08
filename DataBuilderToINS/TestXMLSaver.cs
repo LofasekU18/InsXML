@@ -2,16 +2,31 @@ using System.Xml.Linq;
 namespace InsXml;
 
 //TODO : Figure out how to use delegates for Create method
-public static class TestClass
+public static class Test
 
 {
-	public static XElement CreateXElement<T>(string tagName, T data) // generic method to create XELEMENT, just first opinion, its too complicate to create such long xml
+	public static XElement CreateXElement<T>(string tagName, T data) // generic method to create XELEMENT, just first opinion, its too complicate to create such long xml one by one
 	{
 
 		return new XElement(tagName, data);
 	}
+	static string SelectJudge(DataIsir dataIsir) => dataIsir.NazevOrganizace switch
+	{
+		"Městský soud v Praze" => "MSPH",
+		"Krajský soud v Praze" => "KSPH",
+		"Krajský soud v Českých Budějovicích" => "KSCB",
+		"Krajský soud v Plzn" => "KSPL",
+		"Krajský soud v Ústí nad Labem" => "KSUL",
+		"Krajský soud v Ústí nad Labem – pobočka v Liberci" => "KSLB",
+		"Krajský soud v Hradci Králové" => "KSHK",
+		"Krajský soud v Hradci Králové – pobočka v Pardubicích" => "KSPA",
+		"Krajský soud v Brně" => "KSBR",
+		"Krajský soud v Ostravě" => "KSOS",
+		"Krajský soud v Ostravě – pobočka v Olomouci" => "KSOL",
+		_ => "Midweek day."
+	};
 
-	public static string CreateXmlFo(DataIsirRC dataIsirRC)
+	public static string CreateXmlFo(DataIsirRC dataIsirRc, DataMsAccess dataMsAccess)
 	{
 		return new string($"""
 <?xml version="1.0" encoding="UTF-8"?>
@@ -20,31 +35,31 @@ public static class TestClass
 	<listinne_prilohy/>
 	<hlavicka>
 		<spisznacka>
-			<soud>KSPH</soud>
-			<senat>{dataIsirRC.CisloSenatu}</senat>
+			<soud>{SelectJudge(dataIsirRc)}</soud>
+			<senat>{dataIsirRc.CisloSenatu}</senat>
 			<rejstrik>INS</rejstrik>
-			<bc>{dataIsirRC.BcVec}</bc>
-			<rocnik>{dataIsirRC.Rocnik}</rocnik>
+			<bc>{dataIsirRc.BcVec}</bc>
+			<rocnik>{dataIsirRc.Rocnik}</rocnik>
 		</spisznacka>
 	</hlavicka>
 	<dluznik fo_po_switch="1">
 		<fyzicka_osoba>
 			<osobni_udaje>
 				<osoba>
-					<prijmeni>dluznikPrijmeni</prijmeni>
-					<jmeno>dluznikJmeno</jmeno>
+					<prijmeni>{dataIsirRc.NazevOsoby}</prijmeni>
+					<jmeno>{dataIsirRc.Jmeno}</jmeno>
 				</osoba>
 				<statni_prislusnost/>
-				<datum_narozeni/>
-				<rodne_cislo/>
+				<datum_narozeni>{dataIsirRc.DatumNarozeni}</datum_narozeni>
+				<rodne_cislo>{dataIsirRc.Rc}</rodne_cislo>
 				<osobni_stav/>
 			</osobni_udaje>
 			<adresa>
-				<ulice>dluznikAdresa</ulice>
-				<cpop>1438</cpop>
-				<cori/>
-				<psc>25263</psc>
-				<obec>dluznikAdresa</obec>
+				<ulice>{dataIsirRc.Ulice}</ulice>
+				<cpop>{dataIsirRc.CisloPopisne.Substring(0, dataIsirRc.CisloPopisne.IndexOf('/'))}</cpop>
+				<cori>{dataIsirRc.CisloPopisne.Substring(dataIsirRc.CisloPopisne.IndexOf('/') + 1)}</cori>
+				<psc>{dataIsirRc.Psc}</psc>
+				<obec>{dataIsirRc.Mesto}</obec>
 			</adresa>
 			<koresp_adresa switch="0">
 				<ulice/>
@@ -102,12 +117,12 @@ public static class TestClass
 				<pohledavka_typ>1</pohledavka_typ>
 				<pohledavka_cislo>1</pohledavka_cislo>
 				<nezajistena_jednotlive>
-					<vyse_jistiny>1221.00</vyse_jistiny>
-					<puv_vyse_jistiny>21212.00</puv_vyse_jistiny>
-					<duvod_vzniku>Duvod vzniku - usn/pov, exko, datum vzniku, kde</duvod_vzniku>
+					<vyse_jistiny>{dataMsAccess.RozhodnutiVydal}</vyse_jistiny>
+					<puv_vyse_jistiny>{dataMsAccess.RozhodnutiVydal}</puv_vyse_jistiny>
+					<duvod_vzniku>Duvod vzniku - usn/pov, exko, tady  {dataMsAccess.RozhodnutiVydal} datum vzniku, kde</duvod_vzniku>
 					<vykonatelnost vykonatelnost_switch="0"/>
 					<prislusenstvi prislusenstvi_switch="0"/>
-					<celk_vyse_pohledavky>1221.00</celk_vyse_pohledavky>
+					<celk_vyse_pohledavky>{dataMsAccess.RozhodnutiVydal}</celk_vyse_pohledavky>
 					<vlastnosti podrizena_switch="0" penezita_switch="1" podminena_switch="0" splatna_switch="0" pohledavka_switch="0"/>
 					<dalsi_okolnosti>Dalsi okolnosti - vypocet odmeny a staticky text</dalsi_okolnosti>
 				</nezajistena_jednotlive>
@@ -141,40 +156,36 @@ public static class TestClass
 </ELPP>
 """);
 	}
-	public static string CreateXmlPo()
+	public static string CreateXmlPo(DataIsirIC dataIsirIc, DataMsAccess dataMsAccess)
 	{
-		return new string("""
+		return new string($"""
 <?xml version="1.0" encoding="UTF-8"?>
 <ELPP verze="1.4.2">
 	<prilohy/>
 	<listinne_prilohy/>
 	<hlavicka>
 		<spisznacka>
-			<soud>KSPH</soud>
-			<senat>34</senat>
+			<soud>{SelectJudge(dataIsirIc)}</soud>
+			<senat>{dataIsirIc.CisloSenatu}</senat>
 			<rejstrik>INS</rejstrik>
-			<bc>3434</bc>
-			<rocnik>2024</rocnik>
+			<bc>{dataIsirIc.BcVec}</bc>
+			<rocnik>{dataIsirIc.Rocnik}</rocnik>
 		</spisznacka>
 	</hlavicka>
-	<dluznik fo_po_switch="1">
-		<fyzicka_osoba>
-			<osobni_udaje>
-				<osoba>
-					<prijmeni>dluznikPrijmeni</prijmeni>
-					<jmeno>dluznikJmeno</jmeno>
-				</osoba>
-				<statni_prislusnost/>
-				<datum_narozeni/>
-				<rodne_cislo/>
-				<osobni_stav/>
-			</osobni_udaje>
+	<dluznik fo_po_switch="2">
+		<pravnicka_osoba>
+			<firma>
+				<nazev>{dataIsirIc.NazevOsoby}</nazev>
+				<ico>{dataIsirIc.Ic}</ico>
+				<jine_reg_c/>
+			</firma>
+			<pravni_rad_zalozeni/>
 			<adresa>
-				<ulice>dluznikAdresa</ulice>
-				<cpop>1438</cpop>
-				<cori/>
-				<psc>25263</psc>
-				<obec>dluznikAdresa</obec>
+				<ulice>{dataIsirIc.Ulice}</ulice>
+				<cpop>{dataIsirIc.CisloPopisne.Substring(0, dataIsirIc.CisloPopisne.IndexOf('/'))}</cpop>
+				<cori>{dataIsirIc.CisloPopisne.Substring(dataIsirIc.CisloPopisne.IndexOf('/') + 1)}</cori>
+				<psc>{dataIsirIc.Psc}</psc>
+				<obec>{dataIsirIc.Mesto}</obec>
 			</adresa>
 			<koresp_adresa switch="0">
 				<ulice/>
@@ -188,7 +199,7 @@ public static class TestClass
 				<dat_schr/>
 				<tel/>
 			</kontakt>
-		</fyzicka_osoba>
+		</pravnicka_osoba>
 	</dluznik>
 	<veritel_opak>
 		<veritel>

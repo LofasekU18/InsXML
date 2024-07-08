@@ -32,7 +32,7 @@ class OleConnect
                                     RozhodnutiVydal = reader?.GetValue(0).ToString(),
                                 }, typeof(T));
                             }
-                            if (typeof(T) == typeof(List<string>)) // + SQL(Povinny + adresa - RC a IC) + If(RC == NULL) => IC a opacne
+                            if (typeof(T) == typeof(List<string>)) // + SQL(Povinny + adresa - RC a IC) + If(RC == NULL) => IC and opposite, TODO : problem with 2 more povinny, need to add list of T - declare new class to store data
                             {
                                 return (T)Convert.ChangeType(new List<string> { reader.GetValue(0).ToString(), reader.GetValue(1).ToString() }
                                , typeof(T));

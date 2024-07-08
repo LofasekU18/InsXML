@@ -43,7 +43,6 @@ static class ParseXmlToData
                 Mesto = (string)dataElement?.Element("mesto"),
                 Ulice = (string)dataElement?.Element("ulice"),
                 CisloPopisne = (string)dataElement?.Element("cisloPopisne"),
-                Okres = (string)dataElement?.Element("okres"),
                 Psc = (string)dataElement?.Element("psc"),
             };
         }
@@ -73,7 +72,6 @@ static class ParseXmlToData
                 Mesto = (string)dataElement?.Element("mesto"),
                 Ulice = (string)dataElement?.Element("ulice"),
                 CisloPopisne = (string)dataElement?.Element("cisloPopisne"),
-                Okres = (string)dataElement?.Element("okres"),
                 Psc = (string)dataElement?.Element("psc"),
             };
         }

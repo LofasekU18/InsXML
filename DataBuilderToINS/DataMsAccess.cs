@@ -1,6 +1,6 @@
 namespace InsXml;
 
-class DataMsAccess
+public class DataMsAccess
 {
     public string RozhodnutiVydal { get; set; }
     public string RozhodnutiTyp { get; set; }

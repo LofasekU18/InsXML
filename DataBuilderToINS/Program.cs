@@ -1,57 +1,40 @@
 ﻿using System.Configuration;
-using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using InsXml;
 
 
 
 /*TODO:
-Add logic to:
-1. choose if is subject FO or PO
-2. save to file
-3. figure out how to complete it to self, this is just garbage
+
+- choose if is subject FO or PO, use GetRowFromDatabase, store to list of strings or make independent class, fill to 9 values if IC, 
+- save to file 1/3
+- SQL for GetRowFromDatabase, SELECT SUM of UP, usn/pov(some logic to use right document and right text for 6655 or 7865) 
+- Some menu
+- test if i need I/O method to db in async
 
 */
 //"01881485"
 // "750720/0316"
-System.Console.WriteLine("Zadej exko");
-Console.ReadLine();
-var test5 = OleConnect.GetRowFromDatabase<List<string>>("SELECT TOP 3 * FROM Entry;"); // Find RC, IC in db, add as parm for func to choose pravnickou/fyzickou osobu
-
-var test3 = OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 3 * FROM Entry;");
-// var test4 = OleConnect.GetRowFromDatabase<dluznikB>(ConfigurationManager.AppSettings["Query1"]);
-System.Console.WriteLine(test3.ToString());
-System.Console.WriteLine(test3.GetType());
-// System.Console.WriteLine(test4.ToString());
-// System.Console.WriteLine(test4.GetType());
-System.Console.WriteLine(test5[0] + " zde " + test5[1]);
-System.Console.WriteLine(test5.GetType());
-
-DateOnly dateOnly = new DateOnly(1994, 8, 8);
 
 
 
+var listResultFromDb = OleConnect.GetRowFromDatabase<List<string>>("SELECT TOP 1 * FROM Entry;"); // Querry SELECT Adresy.IC, Adresy.RC FROM Povinni INNER JOIN ADRESY WHERE Povinni.HlavaI=true AND Povinni.HlavaII=true AND Povinni.HlavaIII=true
+System.Console.WriteLine(listResultFromDb[0] + listResultFromDb[1]);
 
-var test8 = TestClass.CreateXElement("datum", dateOnly);
-System.Console.WriteLine(test8);
-
-
-
-
-string a = "750720/0316";
+string a = "01881485";
 
 switch (IntendedID.Intended(a))
 {
     case 1:
-        DataIsirRC test2 = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC(a));
-        if (test2 != null)
-            System.Console.WriteLine(TestClass.CreateXmlFo(test2));
+        DataIsirRC resultFromIsir = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC(a));
+        if (resultFromIsir != null)
+            File.WriteAllText("prihlaska.xml", Test.CreateXmlFo(resultFromIsir, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;")));
         break;
 
     case 2:
-        DataIsirIC test = ParseXmlToData.CreateDataIC(await SearchSoap.SoapSearchingIC(a));
-        if (test != null)
-            System.Console.WriteLine(test.Ic + ", " + test.Mesto);
+        DataIsirIC resultFromIsir2 = ParseXmlToData.CreateDataIC(await SearchSoap.SoapSearchingIC(a));
+        if (resultFromIsir2 != null)
+            File.WriteAllText("prihlaska.xml", Test.CreateXmlPo(resultFromIsir2, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;")));
         break;
     case 0:
         System.Console.WriteLine("Chyba");
