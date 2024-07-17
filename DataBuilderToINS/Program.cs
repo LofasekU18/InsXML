@@ -17,33 +17,36 @@ using InsXml;
 // "750720/0316"
 
 
-string inputExko = "";
-while (inputExko is null)
+// var listResultFromDb = OleConnect.GetRowFromDatabase<List<string>>("SELECT TOP 1 * FROM Entry;"); // Querry SELECT Adresy.RC,Adresy.IC FROM Povinni INNER JOIN ADRESY ON Povinni.[Nazov subjektu]=Adresy.[Nazov subjektu] WHERE Povinni.HlavaI=true AND Povinni.HlavaII=true AND Povinni.HlavaIII=true AND Povinni.[Ex cislo] LIKE {inputExko};
+string inputExko = null;
+while (inputExko == null)
 {
     Console.WriteLine("Zadej exko");
     inputExko = Console.ReadLine();
 }
-var listResultFromDb = OleConnect.GetRowFromDatabase<List<string>>("SELECT TOP 1 * FROM Entry;"); // Querry SELECT Adresy.RC,Adresy.IC FROM Povinni INNER JOIN ADRESY ON Povinni.[Nazov subjektu]=Adresy.[Nazov subjektu] WHERE Povinni.HlavaI=true AND Povinni.HlavaII=true AND Povinni.HlavaIII=true AND Povinni.[Ex cislo] LIKE {inputExko};
 
+// PrimaryData primaryData = OleConnect.GetRowFromDatabase<PrimaryData>("SELECT TOP 1 * FROM Entry;");
+PrimaryData primaryData = new("750720/0316", "01881485");
+System.Console.WriteLine(primaryData.RC);
 
-if (listResultFromDb[0] is null && listResultFromDb[1] is null)
+if (primaryData.RC is null && primaryData.IC is null)
 {
-    System.Console.WriteLine("Povinny nenalezen");
-    System.Console.WriteLine("Zmacni ENTER");
+    System.Console.WriteLine("Nenalezen povinny, stiskni ENTER pro ukonceni");
     Console.ReadLine();
+    Environment.Exit(0);
 
 }
-if (listResultFromDb[0] is null)
+if (primaryData.RC is not null)
 {
-    DataIsirIC resultFromIsir2 = ParseXmlToData.CreateDataIC(await SearchSoap.SoapSearchingIC(listResultFromDb[1]));
+    DataIsirRC resultFromIsir2 = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC(primaryData.RC));
     if (resultFromIsir2 != null)
-        File.WriteAllText("prihlaska.xml", Test.CreateXmlPo(resultFromIsir2, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;")));
+        File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), Test.CreateXmlFo(resultFromIsir2, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;")));
 }
 else
 {
-    DataIsirRC resultFromIsir = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC(listResultFromDb[0]));
+    DataIsirIC resultFromIsir = ParseXmlToData.CreateDataIC(await SearchSoap.SoapSearchingIC(primaryData.IC));
     if (resultFromIsir != null)
-        File.WriteAllText("prihlaska.xml", Test.CreateXmlFo(resultFromIsir, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;")));
+        File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), Test.CreateXmlPo(resultFromIsir, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;")));
 }
 
 

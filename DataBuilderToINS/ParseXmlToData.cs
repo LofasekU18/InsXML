@@ -16,10 +16,6 @@ static class ParseXmlToData
                 XElement dataElement = responseElement?.Element("data");
                 return dataElement;
             }
-            else
-            {
-                return null;
-            }
         }
         else
             System.Console.WriteLine("Nepovedlo se nacist data z ISIR");
