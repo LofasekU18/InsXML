@@ -30,10 +30,10 @@ class OleConnect
                                 return (T)Convert.ChangeType(new DataMsAccess
                                 {
                                     RozhodnutiVydal = reader?.GetValue(0).ToString(),
-                                    RozhodnutiTyp = reader?.GetValue(1).ToString(),
-                                    RozhodnutiCislo = reader?.GetValue(2).ToString(),
-                                    RozhodnutiDatum = (DateTime)reader?.GetValue(3),
-                                    PenizeVymozeno = (int)reader?.GetValue(4),
+                                    // RozhodnutiTyp = reader?.GetValue(1).ToString(),
+                                    // RozhodnutiCislo = reader?.GetValue(2).ToString(),
+                                    // RozhodnutiDatum = (DateTime)reader?.GetValue(3),
+                                    // PenizeVymozeno = (int)reader?.GetValue(4),
                                 }, typeof(T));
                             }
                             if (typeof(T) == typeof(PrimaryData)) // + SQL(Povinny + adresa - RC a IC) + If(RC == NULL) => IC and opposite, TODO : problem with 2 more povinny, need to add list of T - declare new class to store data

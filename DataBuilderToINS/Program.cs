@@ -49,6 +49,7 @@ else
         File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), Test.CreateXmlPo(resultFromIsir, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;")));
 }
 
+record PrimaryData(string RC, string IC);
 
 
 
