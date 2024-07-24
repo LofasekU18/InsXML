@@ -15,40 +15,50 @@ using InsXml;
 */
 //"01881485"
 // "750720/0316"
-
-
 // var listResultFromDb = OleConnect.GetRowFromDatabase<List<string>>("SELECT TOP 1 * FROM Entry;"); // Querry SELECT Adresy.RC,Adresy.IC FROM Povinni INNER JOIN ADRESY ON Povinni.[Nazov subjektu]=Adresy.[Nazov subjektu] WHERE Povinni.HlavaI=true AND Povinni.HlavaII=true AND Povinni.HlavaIII=true AND Povinni.[Ex cislo] LIKE {inputExko};
-string inputExko = null;
-// while (inputExko == null)
-// {
-//     Console.WriteLine("Zadej exko");
-//     inputExko = Console.ReadLine();
-// }
 
-// PrimaryData primaryData = OleConnect.GetRowFromDatabase<PrimaryData>("SELECT TOP 1 * FROM Entry;");
-PrimaryData primaryData = new("750720/0316", "01881485");
+
+string inputExko = null;
+while (inputExko == null)
+{
+    Console.WriteLine("Zadej exko");
+    inputExko = Console.ReadLine();
+}
+
+PrimaryData primaryData = OleConnect.GetRowFromDatabase<PrimaryData>($"SELECT TOP 1 Adresy.[Rodné číslo],Adresy.[IČO] FROM Adresy INNER JOIN Povinní ON Adresy.[Názov subjektu] = Povinní.[Názov subjektu] WHERE Povinní.[Ex číslo] LIKE '{inputExko}' AND Povinní.HlavaI=true AND Povinní.HlavaII=true AND Povinní.HlavaIII=true");  //SELECT TOP 1 Adresy.[Rodné číslo],Adresy.[IČO] FROM Adresy INNER JOIN Povinní ON Adresy.[Názov subjektu] = Povinní.[Názov subjektu] WHERE Povinní.[Ex číslo] LIKE '255/23' AND Povinní.HlavaI=true AND Povinní.HlavaII=true AND Povinní.HlavaIII=true;
+// PrimaryData primaryData = new("750720/0316", "01881485");
 System.Console.WriteLine(primaryData.RC);
+DataMsAccess dataMsAccess = new()
+{
+    RozhodnutiVydal = "Vydal",
+    RozhodnutiTyp = "Typ",
+    RozhodnutiCislo = "Cislo",
+    RozhodnutiDatum = default
+};
+
 
 if (primaryData.RC is null && primaryData.IC is null)
 {
     System.Console.WriteLine("Nenalezen povinny, stiskni ENTER pro ukonceni");
     Console.ReadLine();
-    Environment.Exit(0);
 
-}
-if (primaryData.RC is not null)
-{
-    DataIsirRC resultFromIsir2 = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC(primaryData.RC));
-    if (resultFromIsir2 != null)
-        File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), XMLSaver.CreateXmlFo(resultFromIsir2, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;")));
 }
 else
 {
-    DataIsirIC resultFromIsir = ParseXmlToData.CreateDataIC(await SearchSoap.SoapSearchingIC(primaryData.IC));
-    if (resultFromIsir != null)
-        File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), XMLSaver.CreateXmlPo(resultFromIsir, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;")));
+    if (primaryData.RC is not null)
+    {
+        DataIsirRC resultFromIsir2 = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC(primaryData.RC));
+        if (resultFromIsir2 != null)
+            // File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), XMLSaver.CreateXmlFo(resultFromIsir2, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;"),inputExko));
+            File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), XMLSaver.CreateXmlFo(resultFromIsir2, OleConnect.GetRowFromDatabase<DataMsAccess>($"SELECT TOP 1 RozSudov.vydal, RozSudov.Nazov, RozSudov.cislo, MIN(RozSudov.Vydanedna) FROM RozSudov WHERE Ex LIKE '{inputExko}' GROUP BY RozSudov.vydal, RozSudov.Nazov, RozSudov.cislo;"), inputExko));
+    }
+    else
+    {
+        DataIsirIC resultFromIsir = ParseXmlToData.CreateDataIC(await SearchSoap.SoapSearchingIC(primaryData.IC));
+        if (resultFromIsir != null)
+            File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), XMLSaver.CreateXmlPo(resultFromIsir, OleConnect.GetRowFromDatabase<DataMsAccess>($"SELECT TOP 1 RozSudov.vydal, RozSudov.Nazov, RozSudov.cislo, MIN(RozSudov.Vydanedna) FROM RozSudov WHERE Ex LIKE '{inputExko}' GROUP BY RozSudov.vydal, RozSudov.Nazov, RozSudov.cislo;"), inputExko));
+    }
 }
-
 record PrimaryData(string RC, string IC);
 
 

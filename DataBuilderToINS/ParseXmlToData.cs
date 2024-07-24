@@ -18,7 +18,7 @@ static class ParseXmlToData
             }
         }
         else
-            System.Console.WriteLine("Nepovedlo se nacist data z ISIR");
+            System.Console.WriteLine("Nenasel jsem data v odpovedi");
         return null;
         // XElement stavElement = responseElement?.Element("stav");
     }
@@ -43,7 +43,8 @@ static class ParseXmlToData
             };
         }
         else
-            return new DataIsirIC();
+            Console.WriteLine("Nenasel jsem na justici povinneho");
+        return new DataIsirIC();
     }
 
 
@@ -72,7 +73,8 @@ static class ParseXmlToData
             };
         }
         else
-            return new DataIsirRC();
+            Console.WriteLine("Nenasel jsem na justici povinneho");
+        return new DataIsirRC();
 
 
     }

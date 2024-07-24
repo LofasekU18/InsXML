@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 namespace InsXml;
 
@@ -5,12 +6,12 @@ namespace InsXml;
 public static class XMLSaver
 
 {
-	public static XElement CreateXElement<T>(string tagName, T data) // generic method to create XELEMENT, just first opinion, its too complicate to create such long xml one by one
-	{
+	// public static XElement CreateXElement<T>(string tagName, T data) // generic method to create XELEMENT, just first opinion, its too complicate to create such long xml one by one
+	// {
 
-		return new XElement(tagName, data);
-	}
-	static string SelectJudge(DataIsir dataIsir) => dataIsir.NazevOrganizace switch
+	// 	return new XElement(tagName, data);
+	// }
+	private static string SelectJudge(DataIsir dataIsir) => dataIsir.NazevOrganizace switch
 	{
 		"Městský soud v Praze" => "MSPH",
 		"Krajský soud v Praze" => "KSPH",
@@ -25,9 +26,19 @@ public static class XMLSaver
 		"Krajský soud v Ostravě – pobočka v Olomouci" => "KSOL",
 		_ => "Midweek day."
 	};
-
-	public static string CreateXmlFo(DataIsirRC dataIsirRc, DataMsAccess dataMsAccess)
+	private static string SelectValue(DateOnly dateOnly)
 	{
+		DateOnly comparisonDate = new DateOnly(2018, 4, 1);
+		if (dateOnly > comparisonDate)
+		{
+			return "6655";
+		}
+		else return "7865";
+	}
+
+	public static string CreateXmlFo(DataIsirRC dataIsirRc, DataMsAccess dataMsAccess, string inputExko)
+	{
+		string valueMoney = SelectValue(dataMsAccess.RozhodnutiDatum);
 		return new string($"""
 <?xml version="1.0" encoding="UTF-8"?>
 <ELPP verze="1.4.2">
@@ -77,20 +88,27 @@ public static class XMLSaver
 	</dluznik>
 	<veritel_opak>
 		<veritel>
-			<veritel fo_po_switch="2">
-				<pravnicka_osoba>
-					<firma>
-						<nazev>AAAA</nazev>
-						<ico/>
-						<jine_reg_c/>
-					</firma>
-					<pravni_rad_zalozeni/>
+			<veritel fo_po_switch="1">
+				<fyzicka_osoba>
+					<osobni_udaje>
+						<osoba>
+							<prijmeni>Plášilová Kaufmanová</prijmeni>
+							<jmeno>Hana</jmeno>
+							<titul_pred>Mgr. Bc.</titul_pred>
+							<ico>48963011</ico>
+						</osoba>
+						<statni_prislusnost/>
+						<datum_narozeni/>
+						<rodne_cislo/>
+						<osobni_stav/>
+					</osobni_udaje>
 					<adresa>
-						<ulice>veritelAdresa</ulice>
+						<ulice>Jankovcova</ulice>
 						<cpop>1055</cpop>
 						<cori>13</cori>
 						<psc>17000</psc>
-						<obec>veritelAdresa</obec>
+						<obec>Praha 7</obec>
+						<stat>CZ</stat>
 					</adresa>
 					<koresp_adresa switch="0">
 						<ulice/>
@@ -100,16 +118,16 @@ public static class XMLSaver
 						<obec/>
 					</koresp_adresa>
 					<kontakt>
-						<email/>
-						<dat_schr/>
+						<email>podatelna@exekutor-plasilova.cz</email>
+						<dat_schr>cswtkc2</dat_schr>
 						<tel/>
 					</kontakt>
-				</pravnicka_osoba>
+				</fyzicka_osoba>
 			</veritel>
 			<druh_zastupce>0</druh_zastupce>
 		</veritel>
-		<c_uctu/>
-		<identifikator>VS</identifikator>
+		<c_uctu>130208707/0300</c_uctu>
+		<identifikator>{inputExko.Substring(0, inputExko.IndexOf('/'))}{inputExko.Substring(inputExko.IndexOf('/') + 1)}</identifikator>
 	</veritel_opak>
 	<prihlaska_pohledavky>
 		<pohledavka_opak>
@@ -117,22 +135,22 @@ public static class XMLSaver
 				<pohledavka_typ>1</pohledavka_typ>
 				<pohledavka_cislo>1</pohledavka_cislo>
 				<nezajistena_jednotlive>
-					<vyse_jistiny>{dataMsAccess.RozhodnutiVydal}</vyse_jistiny>
-					<puv_vyse_jistiny>{dataMsAccess.RozhodnutiVydal}</puv_vyse_jistiny>
-					<duvod_vzniku>Duvod vzniku - usn/pov, exko, tady  {dataMsAccess.RozhodnutiVydal} datum vzniku, kde</duvod_vzniku>
+					<vyse_jistiny>{valueMoney}</vyse_jistiny>
+					<puv_vyse_jistiny>{valueMoney}</puv_vyse_jistiny>
+					<duvod_vzniku>Náklady exekučního řízení vedené pod sp.zn. 228 EX {inputExko} na základě {dataMsAccess.RozhodnutiTyp}, které vydal {dataMsAccess.RozhodnutiVydal} č. j. {dataMsAccess.RozhodnutiCislo} ze dne {dataMsAccess.RozhodnutiDatum:dd.MM.yyyy}.</duvod_vzniku>
 					<vykonatelnost vykonatelnost_switch="0"/>
 					<prislusenstvi prislusenstvi_switch="0"/>
-					<celk_vyse_pohledavky>{dataMsAccess.RozhodnutiVydal}</celk_vyse_pohledavky>
+					<celk_vyse_pohledavky>{valueMoney}</celk_vyse_pohledavky>
 					<vlastnosti podrizena_switch="0" penezita_switch="1" podminena_switch="0" splatna_switch="0" pohledavka_switch="0"/>
-					<dalsi_okolnosti>Dalsi okolnosti - vypocet odmeny a staticky text</dalsi_okolnosti>
+					<dalsi_okolnosti>Odměna soudního exekutora ve výši 3.000,00 Kč (§ 6 odst. 3 vyhl. č. 330/2001 Sb.), paušálně určené hotové výdaje ve výši 3.500,00 Kč (§ 13 odst. 1 vyhl. č. 330/2001 Sb.) a DPH 21 % ve výši 1.365 Kč (§ 87 odst. 1 zákona č. 120/2001 Sb.), vše dle exekutorského tarifu.&#xD;&#xD;Doposud vymožená částka na náklady exekuce: 0,- Kč.&#xD;&#xD;Dle nálezu Ústavního soudu České republiky, č.j. IV. ÚS 3250/14, ze dne 1.7.2016, Soudní exekutor má vůči povinnému nárok na náhradu nákladů exekuce (tj. na odměnu a náhradu hotových výdajů) v právními předpisy stanovené minimální výši již v době zahájení insolvenčního řízení, jelikož tento nárok mu vznikl již v okamžiku, kdy byla vůči němu exekuce nařízena a exekutor byl pověřen jejím provedením, a to bez ohledu na to, že jím do doby zahájení řízení insolvenčního nebylo v rámci exekuce vymoženo žádné plnění a zároveň nebyl vydán příkaz k úhradě nákladů exekuce. Dle § 11 odst. 2 vyhl. Č. 330/2001 Sb., exekučního tarifu, má exekutor právo na odměnu ( v minimální výši 3 000,- Kč) i v případě, zanikne-li jeho oprávnění k vedení exekuce, náleží tato odměna exekutorovi tím spíše v případe, kdy jeho oprávnění k vedení exekuce nezaniklo, nýbrž ze zákona došlo pouze k tomu, že v provádění exekuce nelze po dobu trvání účinků zahájeného insolvečního řízení pokračovat.&#xD;&#xD;V případě zasílání plateb v insolvenčím řízení, Vás žádáme o uvedení čísla identifikátor platby uvedeného v přihlášce jako variabilní symbol platby.</dalsi_okolnosti>
 				</nezajistena_jednotlive>
 			</pohledavka>
 		</pohledavka_opak>
 	</prihlaska_pohledavky>
 	<celkem>
-		<celk_vyse_prihlasena>1221.00</celk_vyse_prihlasena>
-		<celk_vyse_nezajistena>1221.00</celk_vyse_nezajistena>
-		<nezaj_pohl_neporizeno>1221.00</nezaj_pohl_neporizeno>
+		<celk_vyse_prihlasena>0.00</celk_vyse_prihlasena>
+		<celk_vyse_nezajistena>0.00</celk_vyse_nezajistena>
+		<nezaj_pohl_neporizeno>0.00</nezaj_pohl_neporizeno>
 		<celk_vyse_zajistena>0.00</celk_vyse_zajistena>
 		<zaj_pohl_neporizeno>0.00</zaj_pohl_neporizeno>
 		<pocet_pohledavek>1</pocet_pohledavek>
@@ -143,11 +161,11 @@ public static class XMLSaver
 			<podepisujici_osoba>1</podepisujici_osoba>
 			<podpis>
 				<v_mesto>Praze</v_mesto>
-				<dne>2024-02-23</dne>
+				<dne>{DateTime.Now:dd.MM.yyyy}</dne>
 				<osoba>
-					<prijmeni>PodpisVeritelePrijmeni</prijmeni>
-					<jmeno>PodpisVeriteleJmeno</jmeno>
-					<titul_pred>PodpisVeriteleTitul</titul_pred>
+					<prijmeni>Plášilová Kaufmanová</prijmeni>
+					<jmeno>Hana</jmeno>
+					<titul_pred>Mgr. Bc.</titul_pred>
 				</osoba>
 				<epodatelna switch="0"/>
 			</podpis>
@@ -156,8 +174,9 @@ public static class XMLSaver
 </ELPP>
 """);
 	}
-	public static string CreateXmlPo(DataIsirIC dataIsirIc, DataMsAccess dataMsAccess)
+	public static string CreateXmlPo(DataIsirIC dataIsirIc, DataMsAccess dataMsAccess, string inputExko)
 	{
+		string valueMoney = SelectValue(dataMsAccess.RozhodnutiDatum);
 		return new string($"""
 <?xml version="1.0" encoding="UTF-8"?>
 <ELPP verze="1.4.2">
@@ -203,20 +222,27 @@ public static class XMLSaver
 	</dluznik>
 	<veritel_opak>
 		<veritel>
-			<veritel fo_po_switch="2">
-				<pravnicka_osoba>
-					<firma>
-						<nazev>AAAA</nazev>
-						<ico/>
-						<jine_reg_c/>
-					</firma>
-					<pravni_rad_zalozeni/>
+			<veritel fo_po_switch="1">
+				<fyzicka_osoba>
+					<osobni_udaje>
+						<osoba>
+							<prijmeni>Plášilová Kaufmanová</prijmeni>
+							<jmeno>Hana</jmeno>
+							<titul_pred>Mgr. Bc.</titul_pred>
+							<ico>48963011</ico>
+						</osoba>
+						<statni_prislusnost/>
+						<datum_narozeni/>
+						<rodne_cislo/>
+						<osobni_stav/>
+					</osobni_udaje>
 					<adresa>
-						<ulice>veritelAdresa</ulice>
+						<ulice>Jankovcova</ulice>
 						<cpop>1055</cpop>
 						<cori>13</cori>
 						<psc>17000</psc>
-						<obec>veritelAdresa</obec>
+						<obec>Praha 7</obec>
+						<stat>CZ</stat>
 					</adresa>
 					<koresp_adresa switch="0">
 						<ulice/>
@@ -226,16 +252,16 @@ public static class XMLSaver
 						<obec/>
 					</koresp_adresa>
 					<kontakt>
-						<email/>
-						<dat_schr/>
+						<email>podatelna@exekutor-plasilova.cz</email>
+						<dat_schr>cswtkc2</dat_schr>
 						<tel/>
 					</kontakt>
-				</pravnicka_osoba>
+				</fyzicka_osoba>
 			</veritel>
 			<druh_zastupce>0</druh_zastupce>
 		</veritel>
-		<c_uctu/>
-		<identifikator>VS</identifikator>
+		<c_uctu>130208707/0300</c_uctu>
+		<identifikator>{inputExko.Substring(0, inputExko.IndexOf('/'))}{inputExko.Substring(inputExko.IndexOf('/') + 1)}</identifikator>
 	</veritel_opak>
 	<prihlaska_pohledavky>
 		<pohledavka_opak>
@@ -243,14 +269,14 @@ public static class XMLSaver
 				<pohledavka_typ>1</pohledavka_typ>
 				<pohledavka_cislo>1</pohledavka_cislo>
 				<nezajistena_jednotlive>
-					<vyse_jistiny>1221.00</vyse_jistiny>
-					<puv_vyse_jistiny>21212.00</puv_vyse_jistiny>
-					<duvod_vzniku>Duvod vzniku - usn/pov, exko, datum vzniku, kde</duvod_vzniku>
+					<vyse_jistiny>{valueMoney}</vyse_jistiny>
+					<puv_vyse_jistiny>{valueMoney}</puv_vyse_jistiny>
+					<duvod_vzniku>Náklady exekučního řízení vedené pod sp.zn. 228 EX {inputExko} na základě {dataMsAccess.RozhodnutiTyp}, které vydal {dataMsAccess.RozhodnutiVydal} č. j. {dataMsAccess.RozhodnutiCislo} ze dne {dataMsAccess.RozhodnutiDatum}.</duvod_vzniku>
 					<vykonatelnost vykonatelnost_switch="0"/>
 					<prislusenstvi prislusenstvi_switch="0"/>
-					<celk_vyse_pohledavky>1221.00</celk_vyse_pohledavky>
+					<celk_vyse_pohledavky>{valueMoney}</celk_vyse_pohledavky>
 					<vlastnosti podrizena_switch="0" penezita_switch="1" podminena_switch="0" splatna_switch="0" pohledavka_switch="0"/>
-					<dalsi_okolnosti>Dalsi okolnosti - vypocet odmeny a staticky text</dalsi_okolnosti>
+					<dalsi_okolnosti>Odměna soudního exekutora ve výši 3.000,00 Kč (§ 6 odst. 3 vyhl. č. 330/2001 Sb.), paušálně určené hotové výdaje ve výši 3.500,00 Kč (§ 13 odst. 1 vyhl. č. 330/2001 Sb.) a DPH 21 % ve výši 1.365 Kč (§ 87 odst. 1 zákona č. 120/2001 Sb.), vše dle exekutorského tarifu.&#xD;&#xD;Doposud vymožená částka na náklady exekuce: 0,- Kč.&#xD;&#xD;Dle nálezu Ústavního soudu České republiky, č.j. IV. ÚS 3250/14, ze dne 1.7.2016, Soudní exekutor má vůči povinnému nárok na náhradu nákladů exekuce (tj. na odměnu a náhradu hotových výdajů) v právními předpisy stanovené minimální výši již v době zahájení insolvenčního řízení, jelikož tento nárok mu vznikl již v okamžiku, kdy byla vůči němu exekuce nařízena a exekutor byl pověřen jejím provedením, a to bez ohledu na to, že jím do doby zahájení řízení insolvenčního nebylo v rámci exekuce vymoženo žádné plnění a zároveň nebyl vydán příkaz k úhradě nákladů exekuce. Dle § 11 odst. 2 vyhl. Č. 330/2001 Sb., exekučního tarifu, má exekutor právo na odměnu ( v minimální výši 3 000,- Kč) i v případě, zanikne-li jeho oprávnění k vedení exekuce, náleží tato odměna exekutorovi tím spíše v případe, kdy jeho oprávnění k vedení exekuce nezaniklo, nýbrž ze zákona došlo pouze k tomu, že v provádění exekuce nelze po dobu trvání účinků zahájeného insolvečního řízení pokračovat.&#xD;&#xD;V případě zasílání plateb v insolvenčím řízení, Vás žádáme o uvedení čísla identifikátor platby uvedeného v přihlášce jako variabilní symbol platby.</dalsi_okolnosti>
 				</nezajistena_jednotlive>
 			</pohledavka>
 		</pohledavka_opak>
@@ -269,11 +295,11 @@ public static class XMLSaver
 			<podepisujici_osoba>1</podepisujici_osoba>
 			<podpis>
 				<v_mesto>Praze</v_mesto>
-				<dne>2024-02-23</dne>
+				<dne>{DateTime.Now:dd.MM.yyyy}</dne>
 				<osoba>
-					<prijmeni>PodpisVeritelePrijmeni</prijmeni>
-					<jmeno>PodpisVeriteleJmeno</jmeno>
-					<titul_pred>PodpisVeriteleTitul</titul_pred>
+					<prijmeni>Plášilová Kaufmanová</prijmeni>
+					<jmeno>Hana</jmeno>
+					<titul_pred>Mgr. Bc.</titul_pred>
 				</osoba>
 				<epodatelna switch="0"/>
 			</podpis>
