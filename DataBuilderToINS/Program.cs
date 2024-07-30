@@ -18,6 +18,9 @@ using InsXml;
 // var listResultFromDb = OleConnect.GetRowFromDatabase<List<string>>("SELECT TOP 1 * FROM Entry;"); // Querry SELECT Adresy.RC,Adresy.IC FROM Povinni INNER JOIN ADRESY ON Povinni.[Nazov subjektu]=Adresy.[Nazov subjektu] WHERE Povinni.HlavaI=true AND Povinni.HlavaII=true AND Povinni.HlavaIII=true AND Povinni.[Ex cislo] LIKE {inputExko};
 
 
+
+//*******************************************   ADD menu, if i want choose RC/IC for SOAP and EXko for other things
+
 string inputExko = null;
 while (inputExko == null)
 {
@@ -28,13 +31,7 @@ while (inputExko == null)
 PrimaryData primaryData = OleConnect.GetRowFromDatabase<PrimaryData>($"SELECT TOP 1 Adresy.[Rodné číslo],Adresy.[IČO] FROM Adresy INNER JOIN Povinní ON Adresy.[Názov subjektu] = Povinní.[Názov subjektu] WHERE Povinní.[Ex číslo] LIKE '{inputExko}' AND Povinní.HlavaI=true AND Povinní.HlavaII=true AND Povinní.HlavaIII=true");  //SELECT TOP 1 Adresy.[Rodné číslo],Adresy.[IČO] FROM Adresy INNER JOIN Povinní ON Adresy.[Názov subjektu] = Povinní.[Názov subjektu] WHERE Povinní.[Ex číslo] LIKE '255/23' AND Povinní.HlavaI=true AND Povinní.HlavaII=true AND Povinní.HlavaIII=true;
 // PrimaryData primaryData = new("750720/0316", "01881485");
 System.Console.WriteLine(primaryData.RC);
-DataMsAccess dataMsAccess = new()
-{
-    RozhodnutiVydal = "Vydal",
-    RozhodnutiTyp = "Typ",
-    RozhodnutiCislo = "Cislo",
-    RozhodnutiDatum = default
-};
+;
 
 
 if (primaryData.RC is null && primaryData.IC is null)

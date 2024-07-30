@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 namespace InsXml;
 
-//TODO : Figure out how to use delegates for Create method
+
 public static class XMLSaver
 
 {
@@ -11,7 +11,9 @@ public static class XMLSaver
 
 	// 	return new XElement(tagName, data);
 	// }
-	private static string SelectJudge(DataIsir dataIsir) => dataIsir.NazevOrganizace switch
+
+	//Krajského soudu v Ústí nad Labem - pobočka v Liberci
+	private static string SelectJudge(string result) => result switch
 	{
 		"Městský soud v Praze" => "MSPH",
 		"Krajský soud v Praze" => "KSPH",
@@ -36,8 +38,24 @@ public static class XMLSaver
 		else return "7865";
 	}
 
+	private static string SelectValueText(string value)
+	{
+		if (value == "6655")
+		{
+			return "Odměna soudního exekutora ve výši 2.000,00 Kč (§ 6 odst. 3 vyhl. č. 330/2001 Sb.), paušálně určené hotové výdaje ve výši 3.500,00 Kč (§ 13 odst. 1 vyhl. č. 330/2001 Sb.) a DPH 21 % ve výši 1.155,00 Kč (§ 87 odst. 1 zákona č. 120/2001 Sb.), vše dle exekutorského tarifu.&#xD;&#xD;Doposud vymožená částka na náklady exekuce: 0,- Kč.&#xD;&#xD;Dle nálezu Ústavního soudu České republiky, č.j. IV. ÚS 3250/14, ze dne 1.7.2016, Soudní exekutor má vůči povinnému nárok na náhradu nákladů exekuce (tj. na odměnu a náhradu hotových výdajů) v právními předpisy stanovené minimální výši již v době zahájení insolvenčního řízení, jelikož tento nárok mu vznikl již v okamžiku, kdy byla vůči němu exekuce nařízena a exekutor byl pověřen jejím provedením, a to bez ohledu na to, že jím do doby zahájení řízení insolvenčního nebylo v rámci exekuce vymoženo žádné plnění a zároveň nebyl vydán příkaz k úhradě nákladů exekuce. Dle § 11 odst. 2 vyhl. Č. 330/2001 Sb., exekučního tarifu, má exekutor právo na odměnu ( v minimální výši 3 000,- Kč) i v případě, zanikne-li jeho oprávnění k vedení exekuce, náleží tato odměna exekutorovi tím spíše v případe, kdy jeho oprávnění k vedení exekuce nezaniklo, nýbrž ze zákona došlo pouze k tomu, že v provádění exekuce nelze po dobu trvání účinků zahájeného insolvečního řízení pokračovat.&#xD;&#xD;V případě zasílání plateb v insolvenčím řízení, Vás žádáme o uvedení čísla identifikátor platby uvedeného v přihlášce jako variabilní symbol platby.";
+		}
+		else
+			return "Odměna soudního exekutora ve výši 3.000,00 Kč (§ 6 odst. 3 vyhl. č. 330/2001 Sb.), paušálně určené hotové výdaje ve výši 3.500,00 Kč (§ 13 odst. 1 vyhl. č. 330/2001 Sb.) a DPH 21 % ve výši 1.365,00 Kč (§ 87 odst. 1 zákona č. 120/2001 Sb.), vše dle exekutorského tarifu.&#xD;&#xD;Doposud vymožená částka na náklady exekuce: 0,- Kč.&#xD;&#xD;Dle nálezu Ústavního soudu České republiky, č.j. IV. ÚS 3250/14, ze dne 1.7.2016, Soudní exekutor má vůči povinnému nárok na náhradu nákladů exekuce (tj. na odměnu a náhradu hotových výdajů) v právními předpisy stanovené minimální výši již v době zahájení insolvenčního řízení, jelikož tento nárok mu vznikl již v okamžiku, kdy byla vůči němu exekuce nařízena a exekutor byl pověřen jejím provedením, a to bez ohledu na to, že jím do doby zahájení řízení insolvenčního nebylo v rámci exekuce vymoženo žádné plnění a zároveň nebyl vydán příkaz k úhradě nákladů exekuce. Dle § 11 odst. 2 vyhl. Č. 330/2001 Sb., exekučního tarifu, má exekutor právo na odměnu ( v minimální výši 3 000,- Kč) i v případě, zanikne-li jeho oprávnění k vedení exekuce, náleží tato odměna exekutorovi tím spíše v případe, kdy jeho oprávnění k vedení exekuce nezaniklo, nýbrž ze zákona došlo pouze k tomu, že v provádění exekuce nelze po dobu trvání účinků zahájeného insolvečního řízení pokračovat.&#xD;&#xD;V případě zasílání plateb v insolvenčím řízení, Vás žádáme o uvedení čísla identifikátor platby uvedeného v přihlášce jako variabilní symbol platby.";
+
+	}
+
+
+
 	public static string CreateXmlFo(DataIsirRC dataIsirRc, DataMsAccess dataMsAccess, string inputExko)
 	{
+		// System.Console.WriteLine(dataIsirRc.ToString());
+		// System.Console.WriteLine(dataMsAccess.ToString());
+		// System.Console.WriteLine(inputExko);
 		string valueMoney = SelectValue(dataMsAccess.RozhodnutiDatum);
 		return new string($"""
 <?xml version="1.0" encoding="UTF-8"?>
@@ -46,7 +64,7 @@ public static class XMLSaver
 	<listinne_prilohy/>
 	<hlavicka>
 		<spisznacka>
-			<soud>{SelectJudge(dataIsirRc)}</soud>
+			<soud>{SelectJudge(dataIsirRc.NazevOrganizace)}</soud>
 			<senat>{dataIsirRc.CisloSenatu}</senat>
 			<rejstrik>INS</rejstrik>
 			<bc>{dataIsirRc.BcVec}</bc>
@@ -67,8 +85,8 @@ public static class XMLSaver
 			</osobni_udaje>
 			<adresa>
 				<ulice>{dataIsirRc.Ulice}</ulice>
-				<cpop>{dataIsirRc.CisloPopisne.Substring(0, dataIsirRc.CisloPopisne.IndexOf('/'))}</cpop>
-				<cori>{dataIsirRc.CisloPopisne.Substring(dataIsirRc.CisloPopisne.IndexOf('/') + 1)}</cori>
+				<cpop>{((dataIsirRc.CisloPopisne.IndexOf("/") != -1) ? (0, dataIsirRc.CisloPopisne.IndexOf('/')) : dataIsirRc.CisloPopisne)}</cpop>
+				<cori>{((dataIsirRc.CisloPopisne.IndexOf("/") != -1) ? (dataIsirRc.CisloPopisne.IndexOf('/') + 1) : "")}</cori>
 				<psc>{dataIsirRc.Psc}</psc>
 				<obec>{dataIsirRc.Mesto}</obec>
 			</adresa>
@@ -142,7 +160,7 @@ public static class XMLSaver
 					<prislusenstvi prislusenstvi_switch="0"/>
 					<celk_vyse_pohledavky>{valueMoney}</celk_vyse_pohledavky>
 					<vlastnosti podrizena_switch="0" penezita_switch="1" podminena_switch="0" splatna_switch="0" pohledavka_switch="0"/>
-					<dalsi_okolnosti>Odměna soudního exekutora ve výši 3.000,00 Kč (§ 6 odst. 3 vyhl. č. 330/2001 Sb.), paušálně určené hotové výdaje ve výši 3.500,00 Kč (§ 13 odst. 1 vyhl. č. 330/2001 Sb.) a DPH 21 % ve výši 1.365 Kč (§ 87 odst. 1 zákona č. 120/2001 Sb.), vše dle exekutorského tarifu.&#xD;&#xD;Doposud vymožená částka na náklady exekuce: 0,- Kč.&#xD;&#xD;Dle nálezu Ústavního soudu České republiky, č.j. IV. ÚS 3250/14, ze dne 1.7.2016, Soudní exekutor má vůči povinnému nárok na náhradu nákladů exekuce (tj. na odměnu a náhradu hotových výdajů) v právními předpisy stanovené minimální výši již v době zahájení insolvenčního řízení, jelikož tento nárok mu vznikl již v okamžiku, kdy byla vůči němu exekuce nařízena a exekutor byl pověřen jejím provedením, a to bez ohledu na to, že jím do doby zahájení řízení insolvenčního nebylo v rámci exekuce vymoženo žádné plnění a zároveň nebyl vydán příkaz k úhradě nákladů exekuce. Dle § 11 odst. 2 vyhl. Č. 330/2001 Sb., exekučního tarifu, má exekutor právo na odměnu ( v minimální výši 3 000,- Kč) i v případě, zanikne-li jeho oprávnění k vedení exekuce, náleží tato odměna exekutorovi tím spíše v případe, kdy jeho oprávnění k vedení exekuce nezaniklo, nýbrž ze zákona došlo pouze k tomu, že v provádění exekuce nelze po dobu trvání účinků zahájeného insolvečního řízení pokračovat.&#xD;&#xD;V případě zasílání plateb v insolvenčím řízení, Vás žádáme o uvedení čísla identifikátor platby uvedeného v přihlášce jako variabilní symbol platby.</dalsi_okolnosti>
+					<dalsi_okolnosti>{SelectValueText(valueMoney)}</dalsi_okolnosti>
 				</nezajistena_jednotlive>
 			</pohledavka>
 		</pohledavka_opak>
@@ -184,7 +202,7 @@ public static class XMLSaver
 	<listinne_prilohy/>
 	<hlavicka>
 		<spisznacka>
-			<soud>{SelectJudge(dataIsirIc)}</soud>
+			<soud>{SelectJudge(dataIsirIc.NazevOrganizace)}</soud>
 			<senat>{dataIsirIc.CisloSenatu}</senat>
 			<rejstrik>INS</rejstrik>
 			<bc>{dataIsirIc.BcVec}</bc>
@@ -201,8 +219,8 @@ public static class XMLSaver
 			<pravni_rad_zalozeni/>
 			<adresa>
 				<ulice>{dataIsirIc.Ulice}</ulice>
-				<cpop>{dataIsirIc.CisloPopisne.Substring(0, dataIsirIc.CisloPopisne.IndexOf('/'))}</cpop>
-				<cori>{dataIsirIc.CisloPopisne.Substring(dataIsirIc.CisloPopisne.IndexOf('/') + 1)}</cori>
+				<cpop>{((dataIsirIc.CisloPopisne.IndexOf("/") != -1) ? (0, dataIsirIc.CisloPopisne.IndexOf('/')) : dataIsirIc.CisloPopisne)}</cpop>
+				<cori>{((dataIsirIc.CisloPopisne.IndexOf("/") != -1) ? (dataIsirIc.CisloPopisne.IndexOf('/') + 1) : "")}</cori>
 				<psc>{dataIsirIc.Psc}</psc>
 				<obec>{dataIsirIc.Mesto}</obec>
 			</adresa>
@@ -276,7 +294,7 @@ public static class XMLSaver
 					<prislusenstvi prislusenstvi_switch="0"/>
 					<celk_vyse_pohledavky>{valueMoney}</celk_vyse_pohledavky>
 					<vlastnosti podrizena_switch="0" penezita_switch="1" podminena_switch="0" splatna_switch="0" pohledavka_switch="0"/>
-					<dalsi_okolnosti>Odměna soudního exekutora ve výši 3.000,00 Kč (§ 6 odst. 3 vyhl. č. 330/2001 Sb.), paušálně určené hotové výdaje ve výši 3.500,00 Kč (§ 13 odst. 1 vyhl. č. 330/2001 Sb.) a DPH 21 % ve výši 1.365 Kč (§ 87 odst. 1 zákona č. 120/2001 Sb.), vše dle exekutorského tarifu.&#xD;&#xD;Doposud vymožená částka na náklady exekuce: 0,- Kč.&#xD;&#xD;Dle nálezu Ústavního soudu České republiky, č.j. IV. ÚS 3250/14, ze dne 1.7.2016, Soudní exekutor má vůči povinnému nárok na náhradu nákladů exekuce (tj. na odměnu a náhradu hotových výdajů) v právními předpisy stanovené minimální výši již v době zahájení insolvenčního řízení, jelikož tento nárok mu vznikl již v okamžiku, kdy byla vůči němu exekuce nařízena a exekutor byl pověřen jejím provedením, a to bez ohledu na to, že jím do doby zahájení řízení insolvenčního nebylo v rámci exekuce vymoženo žádné plnění a zároveň nebyl vydán příkaz k úhradě nákladů exekuce. Dle § 11 odst. 2 vyhl. Č. 330/2001 Sb., exekučního tarifu, má exekutor právo na odměnu ( v minimální výši 3 000,- Kč) i v případě, zanikne-li jeho oprávnění k vedení exekuce, náleží tato odměna exekutorovi tím spíše v případe, kdy jeho oprávnění k vedení exekuce nezaniklo, nýbrž ze zákona došlo pouze k tomu, že v provádění exekuce nelze po dobu trvání účinků zahájeného insolvečního řízení pokračovat.&#xD;&#xD;V případě zasílání plateb v insolvenčím řízení, Vás žádáme o uvedení čísla identifikátor platby uvedeného v přihlášce jako variabilní symbol platby.</dalsi_okolnosti>
+					<dalsi_okolnosti>{SelectValueText(valueMoney)}</dalsi_okolnosti>
 				</nezajistena_jednotlive>
 			</pohledavka>
 		</pohledavka_opak>

@@ -9,7 +9,10 @@ public class DataIsir
     public string Ulice { get; set; }
     public string CisloPopisne { get; set; }
     public string Psc { get; set; }
+
+   
 }
+
 
 
 
