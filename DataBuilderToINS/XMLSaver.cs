@@ -85,7 +85,7 @@ public static class XMLSaver
 			</osobni_udaje>
 			<adresa>
 				<ulice>{dataIsirRc.Ulice}</ulice>
-				<cpop>{((dataIsirRc.CisloPopisne.IndexOf("/") != -1) ? (0, dataIsirRc.CisloPopisne.IndexOf('/')) : dataIsirRc.CisloPopisne)}</cpop>
+				<cpop>{((dataIsirRc.CisloPopisne.IndexOf("/") != -1) ? dataIsirRc.CisloPopisne.Substring(0, dataIsirRc.CisloPopisne.IndexOf('/')) : dataIsirRc.CisloPopisne)}</cpop>
 				<cori>{((dataIsirRc.CisloPopisne.IndexOf("/") != -1) ? (dataIsirRc.CisloPopisne.IndexOf('/') + 1) : "")}</cori>
 				<psc>{dataIsirRc.Psc}</psc>
 				<obec>{dataIsirRc.Mesto}</obec>

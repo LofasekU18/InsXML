@@ -27,9 +27,18 @@ while (inputExko == null)
     Console.WriteLine("Zadej exko");
     inputExko = Console.ReadLine();
 }
+// TEST DATA
+// PrimaryData primaryData = new("750720/0316", "01881485");
+// DataMsAccess dataMsAccess = new DataMsAccess
+// {
+//     RozhodnutiVydal = "Obvodni soud pro Prahu 8",
+//     RozhodnutiTyp = "Povereni",
+//     RozhodnutiCislo = "22",
+//     RozhodnutiDatum = new DateOnly()
+// };
 
 PrimaryData primaryData = OleConnect.GetRowFromDatabase<PrimaryData>($"SELECT TOP 1 Adresy.[Rodné číslo],Adresy.[IČO] FROM Adresy INNER JOIN Povinní ON Adresy.[Názov subjektu] = Povinní.[Názov subjektu] WHERE Povinní.[Ex číslo] LIKE '{inputExko}' AND Povinní.HlavaI=true AND Povinní.HlavaII=true AND Povinní.HlavaIII=true");  //SELECT TOP 1 Adresy.[Rodné číslo],Adresy.[IČO] FROM Adresy INNER JOIN Povinní ON Adresy.[Názov subjektu] = Povinní.[Názov subjektu] WHERE Povinní.[Ex číslo] LIKE '255/23' AND Povinní.HlavaI=true AND Povinní.HlavaII=true AND Povinní.HlavaIII=true;
-// PrimaryData primaryData = new("750720/0316", "01881485");
+
 System.Console.WriteLine(primaryData.RC);
 ;
 
@@ -46,8 +55,8 @@ else
     {
         DataIsirRC resultFromIsir2 = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC(primaryData.RC));
         if (resultFromIsir2 != null)
-            // File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), XMLSaver.CreateXmlFo(resultFromIsir2, OleConnect.GetRowFromDatabase<DataMsAccess>("SELECT TOP 1 * FROM Entry;"),inputExko));
             File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), XMLSaver.CreateXmlFo(resultFromIsir2, OleConnect.GetRowFromDatabase<DataMsAccess>($"SELECT TOP 1 RozSudov.vydal, RozSudov.Nazov, RozSudov.cislo, MIN(RozSudov.Vydanedna) FROM RozSudov WHERE Ex LIKE '{inputExko}' GROUP BY RozSudov.vydal, RozSudov.Nazov, RozSudov.cislo;"), inputExko));
+        // File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "prihlaska.xml"), XMLSaver.CreateXmlFo(resultFromIsir2, dataMsAccess, inputExko));
     }
     else
     {
