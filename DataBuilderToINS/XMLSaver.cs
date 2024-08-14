@@ -30,7 +30,7 @@ public static class XMLSaver
 	};
 	private static string SelectValue(DateOnly dateOnly)
 	{
-		DateOnly comparisonDate = new DateOnly(2018, 4, 1);
+		DateOnly comparisonDate = new DateOnly(2017, 4, 1);
 		if (dateOnly > comparisonDate)
 		{
 			return "6655";
@@ -159,7 +159,12 @@ public static class XMLSaver
 					<vykonatelnost vykonatelnost_switch="0"/>
 					<prislusenstvi prislusenstvi_switch="0"/>
 					<celk_vyse_pohledavky>{valueMoney}</celk_vyse_pohledavky>
-					<vlastnosti podrizena_switch="0" penezita_switch="1" podminena_switch="0" splatna_switch="0" pohledavka_switch="0"/>
+					<vlastnosti podrizena_switch="0" penezita_switch="1" podminena_switch="0" splatna_switch="1" pohledavka_switch="0">
+						<splatna_data>
+							<splatna_od>{dataMsAccess.RozhodnutiDatum:dd.MM.yyyy}</splatna_od>
+							<splatna_v_castce>{valueMoney}</splatna_v_castce>
+						</splatna_data>
+					</vlastnosti>
 					<dalsi_okolnosti>{SelectValueText(valueMoney)}</dalsi_okolnosti>
 				</nezajistena_jednotlive>
 			</pohledavka>
@@ -293,7 +298,12 @@ public static class XMLSaver
 					<vykonatelnost vykonatelnost_switch="0"/>
 					<prislusenstvi prislusenstvi_switch="0"/>
 					<celk_vyse_pohledavky>{valueMoney}</celk_vyse_pohledavky>
-					<vlastnosti podrizena_switch="0" penezita_switch="1" podminena_switch="0" splatna_switch="0" pohledavka_switch="0"/>
+					<vlastnosti podrizena_switch="0" penezita_switch="1" podminena_switch="0" splatna_switch="1" pohledavka_switch="0">
+						<splatna_data>
+							<splatna_od>{dataMsAccess.RozhodnutiDatum:dd.MM.yyyy}</splatna_od>
+							<splatna_v_castce>{valueMoney}</splatna_v_castce>
+						</splatna_data>
+					</vlastnosti>
 					<dalsi_okolnosti>{SelectValueText(valueMoney)}</dalsi_okolnosti>
 				</nezajistena_jednotlive>
 			</pohledavka>
