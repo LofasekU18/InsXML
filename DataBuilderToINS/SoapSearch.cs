@@ -1,7 +1,7 @@
 using System.Text;
 
 namespace InsXml;
-static class SearchSoap
+public static class SearchSoap
 {
 
     // TODO: add check if respon is not valid/null and stop

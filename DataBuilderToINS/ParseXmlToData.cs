@@ -1,8 +1,8 @@
 using System.Xml.Linq;
 namespace InsXml;
-static class ParseXmlToData
+public static class ParseXmlToData
 {
-    static XElement ResponseParse(string response)
+    public static XElement ResponseParse(string response)
     {
         if (response != null)
         {

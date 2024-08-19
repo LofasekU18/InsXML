@@ -13,7 +13,7 @@ public static class XMLSaver
 	// }
 
 	//Krajského soudu v Ústí nad Labem - pobočka v Liberci
-	private static string SelectJudge(string result) => result switch
+	public static string SelectJudge(string result) => result switch
 	{
 		"Městský soud v Praze" => "MSPH",
 		"Krajský soud v Praze" => "KSPH",
@@ -25,7 +25,7 @@ public static class XMLSaver
 		"Krajský soud v Hradci Králové – pobočka v Pardubicích" => "KSPA",
 		"Krajský soud v Brně" => "KSBR",
 		"Krajský soud v Ostravě" => "KSOS",
-		"Krajský soud v Ostravě – pobočka v Olomouci" => "KSOL",
+		"Krajský soud v Ostravě - pobočka v Olomouci" => "KSOL",
 		_ => "Midweek day."
 	};
 	private static string SelectValue(DateOnly dateOnly)
