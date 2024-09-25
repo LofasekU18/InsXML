@@ -1,4 +1,3 @@
-
 using System.Text.RegularExpressions;
 
 static class IntendedID

@@ -32,4 +32,12 @@ public class UnitTest1
         Assert.AreEqual("KSOL", XMLSaver.SelectJudge(data.NazevOrganizace));
 
     }
+    [TestMethod]
+    public async Task ParseDataFromAnswerSOAPAsync2()
+    {
+        DataIsirIC data = ParseXmlToData.CreateDataIC(await SearchSoap.SoapSearchingIC("01881485"));
+        Assert.AreEqual("MSPH", XMLSaver.SelectJudge(data.NazevOrganizace));
+
+    }
+
 }

@@ -39,8 +39,15 @@ while (inputExko == null)
 
 PrimaryData primaryData = OleConnect.GetRowFromDatabase<PrimaryData>($"SELECT TOP 1 Adresy.[Rodné číslo],Adresy.[IČO] FROM Adresy INNER JOIN Povinní ON Adresy.[Názov subjektu] = Povinní.[Názov subjektu] WHERE Povinní.[Ex číslo] LIKE '{inputExko}' AND Povinní.HlavaI=true AND Povinní.HlavaII=true AND Povinní.HlavaIII=true");  //SELECT TOP 1 Adresy.[Rodné číslo],Adresy.[IČO] FROM Adresy INNER JOIN Povinní ON Adresy.[Názov subjektu] = Povinní.[Názov subjektu] WHERE Povinní.[Ex číslo] LIKE '255/23' AND Povinní.HlavaI=true AND Povinní.HlavaII=true AND Povinní.HlavaIII=true;
 
-System.Console.WriteLine(primaryData.RC);
-;
+if (primaryData.RC == null)
+{
+    Console.WriteLine(primaryData.IC);
+}
+else
+    Console.WriteLine(primaryData.RC);
+Console.WriteLine("Zmáčkni Enter pro pokračování");
+Console.ReadLine();
+
 
 
 if (primaryData.RC is null && primaryData.IC is null)

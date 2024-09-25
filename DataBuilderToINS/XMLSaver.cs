@@ -18,7 +18,7 @@ public static class XMLSaver
 		"Městský soud v Praze" => "MSPH",
 		"Krajský soud v Praze" => "KSPH",
 		"Krajský soud v Českých Budějovicích" => "KSCB",
-		"Krajský soud v Plzn" => "KSPL",
+		"Krajský soud v Plzni" => "KSPL",
 		"Krajský soud v Ústí nad Labem" => "KSUL",
 		"Krajský soud v Ústí nad Labem – pobočka v Liberci" => "KSLB",
 		"Krajský soud v Hradci Králové" => "KSHK",
