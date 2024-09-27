@@ -20,12 +20,12 @@ public static class XMLSaver
 		"Krajský soud v Českých Budějovicích" => "KSCB",
 		"Krajský soud v Plzni" => "KSPL",
 		"Krajský soud v Ústí nad Labem" => "KSUL",
-		"Krajský soud v Ústí nad Labem – pobočka v Liberci" => "KSLB",
+        "Krajský soud v Ústí nad Labem \u002D pobočka v Liberci" => "KSLB",
 		"Krajský soud v Hradci Králové" => "KSHK",
-		"Krajský soud v Hradci Králové – pobočka v Pardubicích" => "KSPA",
+        "Krajský soud v Hradci Králové \u002D pobočka v Pardubicích" => "KSPA",
 		"Krajský soud v Brně" => "KSBR",
 		"Krajský soud v Ostravě" => "KSOS",
-		"Krajský soud v Ostravě - pobočka v Olomouci" => "KSOL",
+        "Krajský soud v Ostravě \u002D pobočka v Olomouci" => "KSOL",
 		_ => "Midweek day."
 	};
 	private static string SelectValue(DateOnly dateOnly)
