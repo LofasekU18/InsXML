@@ -38,7 +38,7 @@ class OleConnect
                             }
                             if (typeof(T) == typeof(PrimaryData)) // + SQL(Povinny + adresa - RC a IC) + If(RC == NULL) => IC and opposite, TODO : problem with 2 more povinny, need to add list of T - declare new class to store data
                             {
-                                return (T)Convert.ChangeType(new PrimaryData(reader?.GetValue(0).ToString(), reader?.GetValue(0).ToString())
+                                return (T)Convert.ChangeType(new PrimaryData(reader?.GetValue(0).ToString(), reader?.GetValue(1).ToString())
                                , typeof(T));
                             }
                         }

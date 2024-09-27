@@ -9,7 +9,7 @@ public class UnitTest1
     [TestMethod]
     public void JudgeTest()
     {
-        Assert.AreEqual("KSLB", XMLSaver.SelectJudge("Krajský soud v Ústí nad Labem – poboèka v Liberci"));
+        Assert.AreEqual("KSLB", XMLSaver.SelectJudge("Krajský soud v Ústí nad Labem - poboèka v Liberci"));
         
     }
     [TestMethod]
@@ -22,7 +22,7 @@ public class UnitTest1
     [TestMethod]
     public void JudgeTest3()
     {
-        Assert.AreEqual("KSPA", XMLSaver.SelectJudge("Krajský soud v Hradci Králové – poboèka v Pardubicích"));
+        Assert.AreEqual("KSPA", XMLSaver.SelectJudge("Krajský soud v Hradci Králové - poboèka v Pardubicích"));
 
     }
     [TestMethod]
