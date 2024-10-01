@@ -39,7 +39,7 @@ while (inputExko == null)
 
 PrimaryData primaryData = OleConnect.GetRowFromDatabase<PrimaryData>($"SELECT TOP 1 Adresy.[Rodné číslo],Adresy.[IČO] FROM Adresy INNER JOIN Povinní ON Adresy.[Názov subjektu] = Povinní.[Názov subjektu] WHERE Povinní.[Ex číslo] LIKE '{inputExko}' AND Povinní.HlavaI=true AND Povinní.HlavaII=true AND Povinní.HlavaIII=true");  //SELECT TOP 1 Adresy.[Rodné číslo],Adresy.[IČO] FROM Adresy INNER JOIN Povinní ON Adresy.[Názov subjektu] = Povinní.[Názov subjektu] WHERE Povinní.[Ex číslo] LIKE '255/23' AND Povinní.HlavaI=true AND Povinní.HlavaII=true AND Povinní.HlavaIII=true;
 
-if (primaryData.RC == null)
+if (!primaryData.RC.Contains("/"))
 {
     Console.WriteLine(primaryData.IC);
 }
@@ -58,7 +58,7 @@ if (primaryData.RC is null && primaryData.IC is null)
 }
 else
 {
-    if (primaryData.RC is not null)
+    if (!primaryData.RC.Contains("/"))
     {
         DataIsirRC resultFromIsir2 = ParseXmlToData.CreateDataRC(await SearchSoap.SoapSearchingRC(primaryData.RC));
         if (resultFromIsir2 != null)
