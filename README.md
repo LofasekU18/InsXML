@@ -1,1 +1,1 @@
-My first solution to make my current work easy, nothing big.
+My first solution to make my current work easier, nothing big.
